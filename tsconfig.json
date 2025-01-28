@@ -19,6 +19,6 @@
             "*": ["*"]
         }
     },
-    "include": ["src/**/*", "test/**/*", "test", "config"],
+    "include": ["src/**/*", "test/**/*", "test", "config", "babel.config.js"],
     "exclude": ["node_modules", "dist"]
 }

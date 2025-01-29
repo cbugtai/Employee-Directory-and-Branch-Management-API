@@ -21,6 +21,21 @@ export const getAllEmployees = (req: Request, res: Response): void => {
         res.status(500).json({ message: "Error Retrieving Employees"});
     }
 }
+
 //Get Employee by ID
+export const getEmployee = (req: Request, res: Response): void => {
+    try{
+        const { id } = req.params;
+        const success = employeeService.getEmployee(id); 
+        if (success){
+            res.status(200).json({ message: `Employee ID: ${id}, Retrieved`});
+        } else {
+            res.status(404).json({ message: `Employee ID: ${id}, Not Found`});
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Error Retrieving Employee ID: ${id}"});
+    }
+}
+
 //Update Employee
 //Delete Employee

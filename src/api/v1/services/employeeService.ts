@@ -1,11 +1,11 @@
-import { Employee } from "../models/employeeModel"
-import Employees from "../data/employeeData"
+import { Employee } from "../../../models/employeeModel";
+import employees from "../../../data/employeeData";
 
 //Create Employee
 
 //Get All Employees
 export const getAllEmployees = (): Employee[] => {
-    return Employees;
+    return employees;
 }
 
 //Get Employee by ID

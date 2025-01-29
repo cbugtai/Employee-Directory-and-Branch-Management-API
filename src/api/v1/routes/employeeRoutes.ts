@@ -3,7 +3,7 @@ import * as employeeController from "../controllers/employeeController";
 
 const router: Router = express.Router();
 
-// app.use("/api/v1/", employeeRoutes);
+// "URL:/api/v1/"
 
 //Create Employee
 router.post("/employees", employeeController.createEmployee)

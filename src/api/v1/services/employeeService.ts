@@ -2,6 +2,13 @@ import { Employee } from "../../../models/employeeModel";
 import employees from "../../../data/employeeData";
 
 //Create Employee
+/**
+ * Adds new employee
+ * 
+ * @param employeeData - employee information, must include Name, Position, Department, Email, Phone and BranchID
+ * @throws {error} when any of the required fields are missing
+ * @returns {Employee} the new employee with generated ID 
+ */
 export const addEmployee = (employeeData: Omit<Employee, "id">): Employee => {
     if (
         !employeeData.name       || 

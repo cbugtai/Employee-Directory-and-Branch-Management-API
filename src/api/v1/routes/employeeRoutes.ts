@@ -3,17 +3,17 @@ import * as employeeController from "../controllers/employeeController";
 
 const router: Router = express.Router();
 
-// "URL:/api/v1/"
+// "URL:/api/v1/employees"
 
 //Create Employee
-router.post("/employees", employeeController.createEmployee)
+router.post("/", employeeController.createEmployee)
 //Get All Employees
-router.get("/employees", employeeController.getAllEmployees)
+router.get("/", employeeController.getAllEmployees)
 //Get Employee by ID
-router.get("/employees/:id", employeeController.getEmployee)
+router.get("/:id", employeeController.getEmployee)
 //Update Employee
-router.put("/employees/:id", employeeController.updateEmployee)
+router.put("/:id", employeeController.updateEmployee)
 //Delete Employee
-router.delete("/employees/:id", employeeController.deleteEmployee)
+router.delete("/:id", employeeController.deleteEmployee)
 
 export default router;

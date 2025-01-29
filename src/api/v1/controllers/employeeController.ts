@@ -4,9 +4,9 @@ import * as employeeService from "../services/employeeService";
 //create Employee
 export const createEmployee = (req: Request, res: Response): void => {
     try {
-        const newEmployee = req.body;
-        const createdEmployee = employeeService.createEmployee(newEmployee);
-        res.status(201).json({ message: "Employee Added", data: createdEmployee });
+        const employeeData = req.body;
+        const newEmployee = employeeService.addEmployee(employeeData);
+        res.status(201).json({ message: "Employee Added", data: newEmployee });
     } catch (error) {
         res.status(500).json({ message: "Error Adding Employee" });
     }

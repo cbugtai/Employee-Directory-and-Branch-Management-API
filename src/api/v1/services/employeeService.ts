@@ -44,16 +44,37 @@ export const getAllEmployees = (): Employee[] => {
     return employees;
 }
 
-
-//Get Employee by ID
 /**
+ * Get Employee by ID
  * 
  * @param id id of the employee
- * @returns {Employee} if employee with the given id exists otherwise returns {undefinded}
+ * @returns {Employee} if employee with the given id exists otherwise returns {undefined}
  */
 export const getEmployee = (id:string): Employee | undefined => {
-    return (employees.find(employee => employee.id === id))
+    return (employees.find(employee => employee.id === id));
 }
 
 //Update Employee
+/**
+ * update existing employee data
+ * 
+ * @param id - id of the employee
+ * @param updatedData - Employee data with updated fields
+ * @throws {Error} When given Employee ID doesnt exist
+ * @returns {Employee} The updated employee data
+ */
+export const updateEmployee = (id:string, updatedData: Partial<Employee>): Employee => {
+    const employee = employees.find(employee => employee.id === id);
+
+    if (typeof employee === "undefined"){
+        throw new Error(`Employee with ID ${id} not found.`)
+    }
+
+    const safeUpdate = {...updatedData};
+    delete safeUpdate.id;
+
+    Object.assign(employee, safeUpdate);
+    return employee;
+}
+
 //Delete Employee

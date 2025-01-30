@@ -5,7 +5,7 @@ import employees from "../../../data/employeeData";
 /**
  * Adds new employee
  * 
- * @param employeeData - employee information, must include Name, Position, Department, Email, Phone and BranchID
+ * @param employeeData employee information, must include Name, Position, Department, Email, Phone and BranchID
  * @throws {error} when any of the required fields are missing
  * @returns {Employee} the new employee with generated ID 
  */
@@ -26,7 +26,7 @@ export const addEmployee = (employeeData: Omit<Employee, "id">): Employee => {
     const previousEmployeeID = employees[employees.length -1].id;
 
     const newEmployee: Employee = {
-        id:         previousEmployeeID + 1,
+        id:         (Number(previousEmployeeID) + 1).toString(),
         name:       employeeData.name,
         position:   employeeData.position,
         department: employeeData.department,
@@ -44,6 +44,16 @@ export const getAllEmployees = (): Employee[] => {
     return employees;
 }
 
+
 //Get Employee by ID
+/**
+ * 
+ * @param id id of the employee
+ * @returns {Employee} if employee with the given id exists otherwise returns {undefinded}
+ */
+export const getEmployee = (id:string): Employee | undefined => {
+    return (employees.find(employee => employee.id === id))
+}
+
 //Update Employee
 //Delete Employee

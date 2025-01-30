@@ -26,9 +26,9 @@ export const getAllEmployees = (req: Request, res: Response): void => {
 export const getEmployee = (req: Request, res: Response): void => {
     try{
         const { id } = req.params;
-        const success = employeeService.getEmployee(id); 
-        if (success){
-            res.status(200).json({ message: `Employee ID: ${id}, Retrieved`});
+        const result = employeeService.getEmployee(id); 
+        if (typeof result !== "undefined"){
+            res.status(200).json({ message: `Employee ID: ${id}, Retrieved`, data: result});
         } else {
             res.status(404).json({ message: `Employee ID: ${id}, Not Found`});
         }

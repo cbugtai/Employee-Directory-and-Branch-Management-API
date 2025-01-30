@@ -58,7 +58,7 @@ export const getEmployee = (id:string): Employee | undefined => {
 /**
  * update existing employee data
  * 
- * @param id - id of the employee
+ * @param id - id of the employee to be updated
  * @param updatedData - Employee data with updated fields
  * @throws {Error} When given Employee ID doesnt exist
  * @returns {Employee} The updated employee data
@@ -78,3 +78,17 @@ export const updateEmployee = (id:string, updatedData: Partial<Employee>): Emplo
 }
 
 //Delete Employee
+/**
+ * removes an employee from the employees database
+ * 
+ * @param id - id of the employee to be deleted
+ * @returns {boolean} true if employee was removed, false otherwise
+ */
+export const deleteEmployee = (id:string): boolean => {
+    const index = employees.findIndex(employee => employee.id === id);
+    if (index !== -1){
+        employees.splice(index, 1);
+        return true;
+    }
+    return false;
+}

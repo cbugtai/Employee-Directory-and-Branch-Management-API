@@ -9,30 +9,25 @@ import employees from "../../../data/employeeData";
  * @throws {error} when any of the required fields are missing
  * @returns {Employee} the new employee with generated ID 
  */
-export const addEmployee = (employeeData: Omit<Employee, "id">): Employee => {
+export const addEmployee = (newEmployeeData: Omit<Employee, "id">): Employee => {
     if (
-        !employeeData.name       || 
-        !employeeData.position   || 
-        !employeeData.department ||
-        !employeeData.email      ||
-        !employeeData.phone      ||
-        !employeeData.branchID
+        !newEmployeeData.name       || 
+        !newEmployeeData.position   || 
+        !newEmployeeData.department ||
+        !newEmployeeData.email      ||
+        !newEmployeeData.phone      ||
+        !newEmployeeData.branchID
     ) {
         throw new Error(
             "Missing required fields. Required Fields include: Name, Position, Department, Email, Phone and BranchID"
         );
     }
 
-    const previousEmployeeID = employees[employees.length -1].id;
+    const previousEmployeeID = employees[employees.length -1]?.id || "0";
 
     const newEmployee: Employee = {
         id:         (Number(previousEmployeeID) + 1).toString(),
-        name:       employeeData.name,
-        position:   employeeData.position,
-        department: employeeData.department,
-        email:      employeeData.email,
-        phone:      employeeData.phone,
-        branchID:   employeeData.branchID
+        ...newEmployeeData
     }
 
     employees.push(newEmployee);

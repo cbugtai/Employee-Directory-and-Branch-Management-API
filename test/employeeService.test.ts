@@ -1,5 +1,6 @@
 import { Employee } from "src/models/employeeModel"
 import * as employeeService from "../src/api/v1/services/employeeService"
+import exp from "node:constants";
 
 describe("Employee Services Testing", () => {
     let mockEmployees: Employee[];
@@ -74,7 +75,34 @@ describe("Employee Services Testing", () => {
     })
     
     describe("Update Employee Service Test", () => {
+        const updatedData = {
+            position: "Updated Position",
+            department: "Updated Department",
+        }
 
+        jest.spyOn(employeeService, "updateEmployee").mockImplementation((id, updatedData) => {
+            const employee = mockEmployees.find(mockEmployees => mockEmployees.id === id)
+            if (typeof employee === "undefined"){
+                throw new Error(`Employee with ID ${id} not found.`)
+            }
+            const safeUpdate = {...updatedData};
+            delete safeUpdate.id;
+
+            Object.assign(employee, safeUpdate);
+            return employee
+        })
+
+        it("Should return the updated data of the employee", () => {
+            expect(employeeService.updateEmployee("1",updatedData).position).toBe("Updated Position")
+            expect(employeeService.updateEmployee("1",updatedData).department).toBe("Updated Department")
+        })
+
+        it("Should update the employee data on the employees array", () => {
+            employeeService.updateEmployee("2",updatedData)
+
+            expect(mockEmployees[1].position).toBe("Updated Position")
+            expect(mockEmployees[1].department).toBe("Updated Department")
+        })
     })
 
     describe("Delete Employee Service Test", () => {

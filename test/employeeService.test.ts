@@ -13,7 +13,7 @@ describe("Employee Services Testing", () => {
         ];
     });
 
-    describe("addEmployee function test", () => {
+    describe("Create Employee Service test", () => {
 
         const newEmployeeData = {
             name: "Ethan Brooks",
@@ -48,5 +48,36 @@ describe("Employee Services Testing", () => {
         it("Should return the new employee data", () => {
             expect(employeeService.addEmployee(newEmployeeData)).toStrictEqual({id: "5", ...newEmployeeData})
         })
+    })
+
+    describe("Get All Employees Service Test", () => {
+        jest.spyOn(employeeService, "getAllEmployees").mockImplementation(() => {
+            return mockEmployees;
+        })
+
+        it("Should return all employee records as an array", () => {
+            expect(employeeService.getAllEmployees().length).toBe(4)
+        })
+    })
+
+    describe("Get Employee By ID Service Test", () => {
+        jest.spyOn(employeeService, "getEmployee").mockImplementation((id) => {
+            return (mockEmployees.find(mockEmployees => mockEmployees.id === id));
+        })
+
+        it("Should return the employee Data of the given employee ID", () => {
+            expect(employeeService.getEmployee("1")).toStrictEqual(mockEmployees[0])
+            expect(employeeService.getEmployee("2")).toStrictEqual(mockEmployees[1])
+            expect(employeeService.getEmployee("3")).toStrictEqual(mockEmployees[2])
+            expect(employeeService.getEmployee("4")).toStrictEqual(mockEmployees[3])
+        })
+    })
+    
+    describe("Update Employee Service Test", () => {
+
+    })
+
+    describe("Delete Employee Service Test", () => {
+
     })
 }) 

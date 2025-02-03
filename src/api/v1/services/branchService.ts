@@ -1,5 +1,7 @@
 import { Branch } from "../../../models/branchModel";
 import branches from "../../../data/branchData";
+import { Employee } from "src/models/employeeModel";
+import employees from "src/data/employeeData";
 
 //Create Branch
 /**
@@ -32,8 +34,20 @@ export const createBranch = (newBranchData: Omit<Branch, "id">): Branch => {
 }
 
 //Get All Branches
+export const getAllBranches = (): Branch[] => {
+    return branches;
+}
 
 //Get Branch by ID
+/**
+ * Get Branch by ID
+ * 
+ * @param id - id of the Branch
+ * @returns {Branch} - returns Branch Data if given branch id existsotherwise returns undefined
+ */
+export const getBranch = (id: string): Branch | undefined => {
+    return (branches.find(branch => branch.id === id));
+}
 
 //Update Branch
 

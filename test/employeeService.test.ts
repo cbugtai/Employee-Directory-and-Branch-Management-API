@@ -1,6 +1,5 @@
 import { Employee } from "src/models/employeeModel"
 import * as employeeService from "../src/api/v1/services/employeeService"
-import exp from "node:constants";
 
 describe("Employee Services Testing", () => {
     let mockEmployees: Employee[];
@@ -63,7 +62,7 @@ describe("Employee Services Testing", () => {
 
     describe("Get Employee By ID Service Test", () => {
         jest.spyOn(employeeService, "getEmployee").mockImplementation((id) => {
-            return (mockEmployees.find(mockEmployees => mockEmployees.id === id));
+            return (mockEmployees.find(employee => employee.id === id));
         })
 
         it("Should return the employee Data of the given employee ID", () => {
@@ -81,7 +80,7 @@ describe("Employee Services Testing", () => {
         }
 
         jest.spyOn(employeeService, "updateEmployee").mockImplementation((id, updatedData) => {
-            const employee = mockEmployees.find(mockEmployees => mockEmployees.id === id)
+            const employee = mockEmployees.find(employee => employee.id === id)
             if (typeof employee === "undefined"){
                 throw new Error(`Employee with ID ${id} not found.`)
             }
@@ -106,6 +105,28 @@ describe("Employee Services Testing", () => {
     })
 
     describe("Delete Employee Service Test", () => {
+        jest.spyOn(employeeService, "deleteEmployee").mockImplementation((id) => {
+            const index = mockEmployees.findIndex(employee => employee.id === id);
+            if (index !== -1){
+                mockEmployees.splice(index, 1);
+                return true;
+            }
+            return false;
+        })
 
+        it("Should delete the employee from the employees array", () => {
+            employeeService.deleteEmployee("3")
+
+            expect(mockEmployees.length).toBe(3)
+            expect(mockEmployees.map(employee => employee.id)).toStrictEqual(["1","2","4"])
+        })
+
+        it("Should return true if valid id is given", () => {
+            expect(employeeService.deleteEmployee("2")).toBeTruthy()
+        })
+        it("Should return false if invalid id is given", () => {
+            expect(employeeService.deleteEmployee("16")).toBeFalsy()
+            expect(employeeService.deleteEmployee("sixteen")).toBeFalsy()
+        })
     })
 }) 

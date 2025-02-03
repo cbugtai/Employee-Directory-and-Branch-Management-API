@@ -6,9 +6,9 @@ const router: Router = express.Router();
 // "${URL}/api/v1/employees"
 
 //Get All Employees for a Branch 
-router.get("/branch", logicController.getBranchEmployees)
+router.get("/branch/:branchID", logicController.getBranchEmployees)
 //Get All Employees by Department 
-router.get("/department", logicController.getDepartmentEmployees)
+router.get("/department/:department", logicController.getDepartmentEmployees)
 
 
 export default router;

@@ -22,9 +22,9 @@ export const getDepartmentEmployees = (req: Request, res: Response): void => {
         const { department } = req.params;
         const result = logicService.getDepartmentEmployees(department); 
         if (result){
-            res.status(200).json({ message: `Employees in Department ${department} Retrieved`, data: result});
+            res.status(200).json({ message: `Employees in ${department} Department Retrieved`, data: result});
         } else {
-            res.status(404).json({ message: `Department ${department} Not Found`});
+            res.status(404).json({ message: `${department} Department Not Found`});
         }
     } catch (error) {
         res.status(500).json({ message: `Error Retrieving Employees`});

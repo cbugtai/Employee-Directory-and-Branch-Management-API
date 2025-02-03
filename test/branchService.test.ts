@@ -52,5 +52,24 @@ describe("Branch Service Testing", () => {
         })
     })
 
-    
+    describe("Get All Branches Service Test", () => {
+        jest.spyOn(branchService, "getAllBranches").mockImplementation(() => {
+            return MOCKbranches;
+        })
+
+        it("Should return all Branch records as an array", () => {
+            expect(branchService.getAllBranches().length).toBe(2)
+        })
+    })
+
+    describe("Get Branch By ID Service Test", () => {
+        jest.spyOn(branchService, "getBranch").mockImplementation((id) => {
+            return (MOCKbranches.find(branch => branch.id === id));
+        })
+
+        it("Should return the Branch Data of the given Branch ID", () => {
+            expect(branchService.getBranch("1")).toStrictEqual(MOCKbranches[0])
+            expect(branchService.getBranch("2")).toStrictEqual(MOCKbranches[1])
+        })
+    })
 })

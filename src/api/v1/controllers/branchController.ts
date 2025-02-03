@@ -26,9 +26,9 @@ export const getAllBranches = (req: Request, res: Response): void => {
 export const getBranch = (req: Request, res: Response): void => {
     try{
         const { id } = req.params;
-        const success = branchService.getBranch(id); 
-        if (success){
-            res.status(200).json({ message: `Branch ID ${id} Retrieved`});
+        const result = branchService.getBranch(id); 
+        if (result){
+            res.status(200).json({ message: `Branch ID ${id} Retrieved`, data: result});
         } else {
             res.status(404).json({ message: `Branch ID ${id} Not Found`});
         }

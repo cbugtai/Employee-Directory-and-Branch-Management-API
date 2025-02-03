@@ -59,9 +59,9 @@ export const deleteBranch = (req:Request, res:Response): void => {
         const { id } = req.params;
         const success = branchService.deleteBranch(id);
         if (success){
-            res.status(200).json({ message: `Branch ID: ${id}, Deleted`});
+            res.status(200).json({ message: `Branch ID ${id} Deleted`});
         } else {
-            res.status(404).json({ message: `Branch ID: ${id}, Not Found`});
+            res.status(404).json({ message: `Branch ID ${id} Not Found`});
         }
     } catch (error) {
         res.status(500).json({ message: `Error Deleting Branch`});

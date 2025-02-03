@@ -13,7 +13,7 @@ export const createBranch = (newBranchData: Omit<Branch, "id">): Branch => {
     if (
         !newBranchData.name     ||
         !newBranchData.address  ||
-        !newBranchData.phone    ||
+        !newBranchData.phone    
     ) {
         throw new Error(
             "Missing required fields. Required Fields include Name, Address and Phone Number"
@@ -71,3 +71,17 @@ export const updateBranch = (id: string, updatedData: Partial<Branch>): Branch =
 }
 
 //Delete Branch
+/**
+ * Remove a Branch from the branches array 
+ * 
+ * @param id - id of the Branch to be deleted.
+ * @returns {boolean} - returns true if Branch was remove, false if not
+ */
+export const deleteBranch = (id: string): boolean => {
+    const index = branches.findIndex(branch => branch.id == id);
+    if (index !== -1){
+        branches.splice(index, 1);
+        return true;
+    }
+    return false;
+}

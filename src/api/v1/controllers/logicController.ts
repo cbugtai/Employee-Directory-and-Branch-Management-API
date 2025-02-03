@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import * as logicService from "../services/logicService";
+import { Employee } from "src/models/employeeModel";
 
 //Get All Employees for a Branch
 export const getBranchEmployees = (req: Request, res: Response): void => {
     try{
         const { branchID } = req.params;
-        const result = logicService.getBranchEmployees(branchID); 
+        const result: Employee[] | undefined = logicService.getBranchEmployees(branchID); 
         if (result){
             res.status(200).json({ message: `Employees in Branch ID ${branchID} Retrieved`, data: result});
         } else {
@@ -20,7 +21,7 @@ export const getBranchEmployees = (req: Request, res: Response): void => {
 export const getDepartmentEmployees = (req: Request, res: Response): void => {
     try{
         const { department } = req.params;
-        const result = logicService.getDepartmentEmployees(department); 
+        const result: Employee[] | undefined = logicService.getDepartmentEmployees(department); 
         if (result){
             res.status(200).json({ message: `Employees in ${department} Department Retrieved`, data: result});
         } else {

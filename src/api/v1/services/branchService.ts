@@ -20,7 +20,7 @@ export const createBranch = (newBranchData: Omit<Branch, "id">): Branch => {
         )
     }
 
-    const previousBranchID = branches[branches.length -1]?.id || "0";
+    const previousBranchID:string = branches[branches.length -1]?.id || "0";
 
     const newBranch: Branch = {
         id:     (Number(previousBranchID) + 1).toString(),
@@ -57,7 +57,7 @@ export const getBranch = (id: string): Branch | undefined => {
  * @returns {Branch} - the updated Branch Data
  */
 export const updateBranch = (id: string, updatedData: Partial<Branch>): Branch => {
-    const branch = branches.find(branch => branch.id === id);
+    const branch:Branch | undefined = branches.find(branch => branch.id === id);
     
     if (typeof branch === "undefined"){
         throw new Error(`Branch with ID ${id} not found.`)

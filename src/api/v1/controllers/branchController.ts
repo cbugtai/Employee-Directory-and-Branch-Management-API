@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import * as branchService from "../services/branchService";
+import { Branch } from "src/models/branchModel";
 
 //create Branch
 export const createBranch = (req: Request, res: Response): void => {
     try {
-        const newBranchData = req.body;
-        const createdBranch = branchService.createBranch(newBranchData);
+        const newBranchData: Branch = req.body;
+        const createdBranch: Branch = branchService.createBranch(newBranchData);
         res.status(201).json({ message: "Branch Added", data: createdBranch });
     } catch (error) {
         res.status(500).json({ message: "Error Adding Branch" });
@@ -15,7 +16,7 @@ export const createBranch = (req: Request, res: Response): void => {
 //Get All Branches
 export const getAllBranches = (req: Request, res: Response): void => {
     try {
-        const Branches = branchService.getAllBranches();
+        const Branches: Branch[] = branchService.getAllBranches();
         res.status(200).json({ message: "Branches Retrieved", data: Branches });
     } catch (error) {
         res.status(500).json({ message: "Error Retrieving Branches"});
@@ -26,7 +27,7 @@ export const getAllBranches = (req: Request, res: Response): void => {
 export const getBranch = (req: Request, res: Response): void => {
     try{
         const { id } = req.params;
-        const result = branchService.getBranch(id); 
+        const result: Branch | undefined = branchService.getBranch(id); 
         if (result){
             res.status(200).json({ message: `Branch ID ${id} Retrieved`, data: result});
         } else {
@@ -41,8 +42,8 @@ export const getBranch = (req: Request, res: Response): void => {
 export const updateBranch = (req:Request, res: Response): void => {
     try{
         const { id } = req.params;
-        const updatedData = req.body;
-        const updatedBranch = branchService.updateBranch(id, updatedData);
+        const updatedData: Branch = req.body;
+        const updatedBranch: Branch = branchService.updateBranch(id, updatedData);
         if (updatedBranch) {
             res.status(200).json({ message: `Branch ID ${id} Updated`, data: updatedBranch});
         } else {
@@ -57,7 +58,7 @@ export const updateBranch = (req:Request, res: Response): void => {
 export const deleteBranch = (req:Request, res:Response): void => {
     try{
         const { id } = req.params;
-        const success = branchService.deleteBranch(id);
+        const success: boolean = branchService.deleteBranch(id);
         if (success){
             res.status(200).json({ message: `Branch ID ${id} Deleted`});
         } else {

@@ -1,4 +1,4 @@
-import { Employee } from "src/models/employeeModel"
+import { Employee } from "../src/models/employeeModel"
 import * as employeeService from "../src/api/v1/services/employeeService"
 
 describe("Employee Services Testing", () => {

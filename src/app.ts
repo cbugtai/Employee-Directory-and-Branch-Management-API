@@ -4,6 +4,7 @@ import morgan from "morgan";
 import employeeRoutes from "./api/v1/routes/employeeRoutes";
 
 const app: Express = express();
+app.use(express.json());
 
 // Use Morgan for HTTP request logging
 app.use(morgan("combined"));

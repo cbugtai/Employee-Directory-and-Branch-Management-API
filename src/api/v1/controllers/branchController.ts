@@ -4,8 +4,8 @@ import * as branchService from "../services/branchService";
 //create Branch
 export const createBranch = (req: Request, res: Response): void => {
     try {
-        const newBranch = req.body;
-        const createdBranch = branchService.createBranch(newBranch);
+        const newBranchData = req.body;
+        const createdBranch = branchService.createBranch(newBranchData);
         res.status(201).json({ message: "Branch Added", data: createdBranch });
     } catch (error) {
         res.status(500).json({ message: "Error Adding Branch" });

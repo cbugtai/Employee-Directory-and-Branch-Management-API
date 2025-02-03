@@ -101,4 +101,23 @@ describe("Branch Service Testing", () => {
             expect(MOCKbranches[1].phone).toBe("Updated Phone Number")
         })
     })
+
+    describe("Delete Branch Service Test", () => {
+        jest.spyOn(branchService, "deleteBranch").mockImplementation((id) => {
+            const index = MOCKbranches.findIndex(branch => branch.id == id);
+            if (index !== -1){
+                MOCKbranches.splice(index, 1);
+                return true;
+            }
+            return false;
+        })
+
+        it("Should return true if valid id is given", () => {
+            expect(branchService.deleteBranch("1")).toBeTruthy()
+        })
+        it("Should return false if invalid id is given", () => {
+            expect(branchService.deleteBranch("16")).toBeFalsy()
+            expect(branchService.deleteBranch("sixteen")).toBeFalsy()
+        })
+    })
 })

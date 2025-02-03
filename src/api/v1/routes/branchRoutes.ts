@@ -6,14 +6,14 @@ const router: Router = express.Router();
 // "URL:/api/v1/"
 
 //Create Branch
-router.post("/branch", branchController.createBranch)
+router.post("/", branchController.createBranch)
 //Get All Branches
-router.get("/branch", branchController.getAllBranches)
+router.get("/", branchController.getAllBranches)
 //GEt Branch By ID
-router.get("/branch/:id", branchController.getBranch)
+router.get("/:id", branchController.getBranch)
 //Update Branch
-router.put("/branch/:id", branchController.updateBranch)
+router.put("/:id", branchController.updateBranch)
 //Delete Branch
-router.delete("/branch/:id", branchController.deleteBranch)
+router.delete("/:id", branchController.deleteBranch)
 
 export default router;

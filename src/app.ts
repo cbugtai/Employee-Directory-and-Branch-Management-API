@@ -2,6 +2,7 @@ import express, { Request, Response, Express } from "express";
 import morgan from "morgan";
 
 import employeeRoutes from "./api/v1/routes/employeeRoutes";
+import branchRoutes from "./api/v1/routes/branchRoutes"
 
 const app: Express = express();
 app.use(express.json());
@@ -19,7 +20,12 @@ app.get("/api/v1/health", (req, res) => {
 });
 
 /**
- * Mount the employee routes on /api/v1
+ * Mount the Branch routes on /api/v1/
+ */
+app.use("/api/v1/branch", branchRoutes);
+
+/**
+ * Mount the employee routes on /api/v1/
  */
 app.use("/api/v1/employees", employeeRoutes);
 

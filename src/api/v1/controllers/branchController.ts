@@ -8,7 +8,7 @@ export const createBranch = (req: Request, res: Response): void => {
         const newBranchData: Branch = req.body;
         const createdBranch: Branch = branchService.createBranch(newBranchData);
         res.status(201).json({ message: "Branch Added", data: createdBranch });
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: "Error Adding Branch" });
     }
 };
@@ -18,7 +18,7 @@ export const getAllBranches = (req: Request, res: Response): void => {
     try {
         const Branches: Branch[] = branchService.getAllBranches();
         res.status(200).json({ message: "Branches Retrieved", data: Branches });
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: "Error Retrieving Branches"});
     }
 }
@@ -33,7 +33,7 @@ export const getBranch = (req: Request, res: Response): void => {
         } else {
             res.status(404).json({ message: `Branch ID ${id} Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Retrieving Branch`});
     }
 }
@@ -49,7 +49,7 @@ export const updateBranch = (req:Request, res: Response): void => {
         } else {
             res.status(404).json({ message: `Branch ID ${id} Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Updating Branch`});
     }
 }
@@ -64,7 +64,7 @@ export const deleteBranch = (req:Request, res:Response): void => {
         } else {
             res.status(404).json({ message: `Branch ID ${id} Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Deleting Branch`});
     }
 }

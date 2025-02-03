@@ -12,7 +12,7 @@ export const getBranchEmployees = (req: Request, res: Response): void => {
         } else {
             res.status(404).json({ message: `Branch ID ${branchID} Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Retrieving Employees`});
     }
 }
@@ -27,7 +27,7 @@ export const getDepartmentEmployees = (req: Request, res: Response): void => {
         } else {
             res.status(404).json({ message: `${department} Department Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Retrieving Employees`});
     }
 }

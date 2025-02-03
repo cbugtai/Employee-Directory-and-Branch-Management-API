@@ -8,7 +8,7 @@ export const createEmployee = (req: Request, res: Response): void => {
         const employeeData: Employee = req.body;
         const newEmployee: Employee = employeeService.addEmployee(employeeData);
         res.status(201).json({ message: "Employee Added", data: newEmployee });
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: "Error Adding Employee" });
     }
 };
@@ -18,7 +18,7 @@ export const getAllEmployees = (req: Request, res: Response): void => {
     try {
         const employees: Employee[] = employeeService.getAllEmployees();
         res.status(200).json({ message: "Employees Retrieved", data: employees });
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: "Error Retrieving Employees"});
     }
 }
@@ -33,7 +33,7 @@ export const getEmployee = (req: Request, res: Response): void => {
         } else {
             res.status(404).json({ message: `Employee ID ${id} Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Retrieving Employee`});
     }
 }
@@ -49,7 +49,7 @@ export const updateEmployee = (req:Request, res: Response): void => {
         } else {
             res.status(404).json({ message: `Employee ID: ${id}, Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Updating Employee`});
     }
 }
@@ -64,7 +64,7 @@ export const deleteEmployee = (req:Request, res:Response): void => {
         } else {
             res.status(404).json({ message: `Employee ID: ${id}, Not Found`});
         }
-    } catch (error) {
+    } catch {
         res.status(500).json({ message: `Error Deleting Employee`});
     }
 }

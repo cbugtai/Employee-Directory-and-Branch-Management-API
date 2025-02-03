@@ -72,4 +72,33 @@ describe("Branch Service Testing", () => {
             expect(branchService.getBranch("2")).toStrictEqual(MOCKbranches[1])
         })
     })
+
+    describe("Update Branch Service Test", () => {
+        const updatedData = {
+            address: "Updated Address",
+            phone: "Updated Phone Number"
+        }
+
+        jest.spyOn(branchService, "updateBranch").mockImplementation((id, updatedData) => {
+            const branch = MOCKbranches.find(branch => branch.id === id);
+            if (typeof branch === "undefined"){
+                throw new Error(`Branch with ID ${id} not found.`)
+            }
+            const safeUpdate = {...updatedData};
+            delete safeUpdate.id;
+            Object.assign(branch, safeUpdate);
+            return branch;
+        })
+
+        it("Should return the updated data of the Branch", () => {
+            expect(branchService.updateBranch("1",updatedData).address).toBe("Updated Address")
+            expect(branchService.updateBranch("1",updatedData).phone).toBe("Updated Phone Number")
+        })
+        it("Should update the branch data on the branch array", () => {
+            branchService.updateBranch("2",updatedData)
+
+            expect(MOCKbranches[1].address).toBe("Updated Address")
+            expect(MOCKbranches[1].phone).toBe("Updated Phone Number")
+        })
+    })
 })

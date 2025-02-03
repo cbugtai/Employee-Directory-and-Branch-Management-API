@@ -44,9 +44,9 @@ export const updateBranch = (req:Request, res: Response): void => {
         const updatedData = req.body;
         const updatedBranch = branchService.updateBranch(id, updatedData);
         if (updatedBranch) {
-            res.status(200).json({ message: `Branch ID: ${id}, Updated`, data: updatedBranch});
+            res.status(200).json({ message: `Branch ID ${id} Updated`, data: updatedBranch});
         } else {
-            res.status(404).json({ message: `Branch ID: ${id}, Not Found`});
+            res.status(404).json({ message: `Branch ID ${id} Not Found`});
         }
     } catch (error) {
         res.status(500).json({ message: `Error Updating Branch`});

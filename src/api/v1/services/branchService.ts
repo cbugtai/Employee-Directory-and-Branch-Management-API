@@ -1,7 +1,5 @@
 import { Branch } from "../../../models/branchModel";
 import branches from "../../../data/branchData";
-import { Employee } from "src/models/employeeModel";
-import employees from "src/data/employeeData";
 
 //Create Branch
 /**
@@ -50,5 +48,26 @@ export const getBranch = (id: string): Branch | undefined => {
 }
 
 //Update Branch
+/**
+ * Updates Existing Branch Data
+ * 
+ * @param id - id of the branch to be updated
+ * @param updatedData - object with updated Branch Data
+ * @throws {Error} - error when branch id doesnt exist
+ * @returns {Branch} - the updated Branch Data
+ */
+export const updateBranch = (id: string, updatedData: Partial<Branch>): Branch => {
+    const branch = branches.find(branch => branch.id === id);
+    
+    if (typeof branch === "undefined"){
+        throw new Error(`Branch with ID ${id} not found.`)
+    }
+
+    const safeUpdate = {...updatedData};
+    delete safeUpdate.id;
+
+    Object.assign(branch, safeUpdate);
+    return branch;
+}
 
 //Delete Branch

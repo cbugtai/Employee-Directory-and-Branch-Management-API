@@ -5,7 +5,7 @@ describe("GET /api/v1/health", () => {
     it("should return 200 OK", async () => {
         const response: Response = await request(app).get("/api/v1/health");
 
-        const today = new Date().toISOString().slice(0,13)
+        const today: string = new Date().toISOString().slice(0,13)
 
         expect(response.status).toBe(200);
         expect(response.body.status).toBe("OK");

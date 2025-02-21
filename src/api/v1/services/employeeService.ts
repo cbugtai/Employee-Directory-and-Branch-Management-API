@@ -1,4 +1,4 @@
-import { Employee } from "../../../models/employeeModel";
+import { Employee } from "../models/employeeModel";
 import employees from "../../../data/employeeData";
 
 //Create Employee
@@ -23,7 +23,7 @@ export const addEmployee = (newEmployeeData: Omit<Employee, "id">): Employee => 
         );
     }
 
-    const previousEmployeeID = employees[employees.length -1]?.id || "0";
+    const previousEmployeeID: string = employees[employees.length -1]?.id || "0";
 
     const newEmployee: Employee = {
         id:         (Number(previousEmployeeID) + 1).toString(),
@@ -58,14 +58,14 @@ export const getEmployee = (id:string): Employee | undefined => {
  * @throws {Error} When given Employee ID doesnt exist
  * @returns {Employee} The updated employee data
  */
-export const updateEmployee = (id:string, updatedData: Partial<Employee>): Employee => {
-    const employee = employees.find(employee => employee.id === id);
+export const updateEmployee = (id:string, updatedData: Partial<Employee>): Partial<Employee> => {
+    const employee: Partial<Employee> | undefined = employees.find(employee => employee.id === id);
 
     if (typeof employee === "undefined"){
         throw new Error(`Employee with ID ${id} not found.`)
     }
 
-    const safeUpdate = {...updatedData};
+    const safeUpdate: Partial<Employee> = {...updatedData};
     delete safeUpdate.id;
 
     Object.assign(employee, safeUpdate);
@@ -80,7 +80,7 @@ export const updateEmployee = (id:string, updatedData: Partial<Employee>): Emplo
  * @returns {boolean} true if employee was removed, false otherwise
  */
 export const deleteEmployee = (id:string): boolean => {
-    const index = employees.findIndex(employee => employee.id === id);
+    const index: number = employees.findIndex(employee => employee.id === id);
     if (index !== -1){
         employees.splice(index, 1);
         return true;

@@ -1,4 +1,4 @@
-import { Branch } from "../../../models/branchModel";
+import { Branch } from "../models/branchModel";
 import branches from "../../../data/branchData";
 
 //Create Branch
@@ -63,7 +63,7 @@ export const updateBranch = (id: string, updatedData: Partial<Branch>): Branch =
         throw new Error(`Branch with ID ${id} not found.`)
     }
 
-    const safeUpdate = {...updatedData};
+    const safeUpdate: Partial<Branch> = {...updatedData};
     delete safeUpdate.id;
 
     Object.assign(branch, safeUpdate);
@@ -78,7 +78,7 @@ export const updateBranch = (id: string, updatedData: Partial<Branch>): Branch =
  * @returns {boolean} - returns true if Branch was remove, false if not
  */
 export const deleteBranch = (id: string): boolean => {
-    const index = branches.findIndex(branch => branch.id == id);
+    const index: number = branches.findIndex(branch => branch.id == id);
     if (index !== -1){
         branches.splice(index, 1);
         return true;

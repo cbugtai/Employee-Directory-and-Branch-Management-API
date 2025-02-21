@@ -1,4 +1,4 @@
-import { Employee } from "../models/employeeModel";
+import { Employee } from "../api/v1/models/employeeModel";
 
 const employees: Employee[] = [
     { id: "1", name: "Alice Johnson", position: "Branch Manager", department: "Management", email: "alice.johnson@pixell-river.com", phone: "604-555-0148", branchID: "1" },

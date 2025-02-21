@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import * as logicService from "../services/logicService";
 import { Employee } from "src/models/employeeModel";
 
-//Get All Employees for a Branch
+/** 
+ * @description Get All Employees for a Branch
+ * @route GET v1/employees/branch/:branchID
+ */
 export const getBranchEmployees = (req: Request, res: Response): void => {
     try{
         const { branchID } = req.params;
@@ -17,7 +20,10 @@ export const getBranchEmployees = (req: Request, res: Response): void => {
     }
 }
 
-//Get All Employees by Department
+/** 
+ * @description Get All Employees by Department
+ * @route GET v1/employees//department/:department
+ */
 export const getDepartmentEmployees = (req: Request, res: Response): void => {
     try{
         const { department } = req.params;

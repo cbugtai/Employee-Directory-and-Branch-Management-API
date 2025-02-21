@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import * as employeeService from "../services/employeeService";
 import { Employee } from "src/models/employeeModel";
 
-//create Employee
+/**
+ * @description Create Employee.
+ * @route POST v1/employees/
+ */
 export const createEmployee = (req: Request, res: Response): void => {
     try {
         const employeeData: Employee = req.body;
@@ -13,7 +16,10 @@ export const createEmployee = (req: Request, res: Response): void => {
     }
 };
 
-//Get All Employees
+/**
+ * @description Get All Employeees.
+ * @route GET v1/employees/
+ */
 export const getAllEmployees = (req: Request, res: Response): void => {
     try {
         const employees: Employee[] = employeeService.getAllEmployees();
@@ -23,7 +29,10 @@ export const getAllEmployees = (req: Request, res: Response): void => {
     }
 }
 
-//Get Employee by ID
+/**
+ * @description Get Employeee By ID.
+ * @route GET v1/employees/:id
+ */
 export const getEmployee = (req: Request, res: Response): void => {
     try{
         const { id } = req.params;
@@ -38,7 +47,10 @@ export const getEmployee = (req: Request, res: Response): void => {
     }
 }
 
-//Update Employee
+/**
+ * @description Update Employee.
+ * @route PUT v1/employees/:id
+ */
 export const updateEmployee = (req:Request, res: Response): void => {
     try{
         const { id } = req.params;
@@ -54,7 +66,10 @@ export const updateEmployee = (req:Request, res: Response): void => {
     }
 }
 
-//Delete Employee
+/**
+ * @description Delete Employee.
+ * @route DELETE v1/employees/:id
+ */
 export const deleteEmployee = (req:Request, res:Response): void => {
     try{
         const { id } = req.params;

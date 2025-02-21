@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import * as branchService from "../services/branchService";
 import { Branch } from "src/models/branchModel";
 
-//create Branch
+/**
+ * @description Create Branch.
+ * @route POST v1/branch/
+ */
 export const createBranch = (req: Request, res: Response): void => {
     try {
         const newBranchData: Branch = req.body;
@@ -13,7 +16,10 @@ export const createBranch = (req: Request, res: Response): void => {
     }
 };
 
-//Get All Branches
+/**
+ * @description Get All Branches.
+ * @route GET v1/branch/
+ */
 export const getAllBranches = (req: Request, res: Response): void => {
     try {
         const Branches: Branch[] = branchService.getAllBranches();
@@ -23,7 +29,10 @@ export const getAllBranches = (req: Request, res: Response): void => {
     }
 }
 
-//Get Branch by ID
+/**
+ * @description Get Branche By ID.
+ * @route GET v1/branch/:id
+ */
 export const getBranch = (req: Request, res: Response): void => {
     try{
         const { id } = req.params;
@@ -38,7 +47,10 @@ export const getBranch = (req: Request, res: Response): void => {
     }
 }
 
-//Update Branch
+/**
+ * @description Update Branch.
+ * @route PUT v1/branch/:id
+ */
 export const updateBranch = (req:Request, res: Response): void => {
     try{
         const { id } = req.params;
@@ -54,7 +66,10 @@ export const updateBranch = (req:Request, res: Response): void => {
     }
 }
 
-//Delete Branch
+/**
+ * @description Delete Branch.
+ * @route DELETE v1/branch/:id
+ */
 export const deleteBranch = (req:Request, res:Response): void => {
     try{
         const { id } = req.params;

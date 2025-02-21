@@ -1,11 +1,11 @@
-import { Branch } from "../src/models/branchModel"
+import { Branch } from "../src/api/v1/models/branchModel"
 import * as branchService from "../src/api/v1/services/branchService"
 
 describe("Branch Service Testing", () => {
-    let MOCKbranches: Branch[];
+    let mockBranches: Branch[];
 
     beforeEach(() => {
-        MOCKbranches = [
+        mockBranches = [
             {
                 id: "1",
                 name: "Vancouver Branch",
@@ -29,19 +29,19 @@ describe("Branch Service Testing", () => {
         }
 
         jest.spyOn(branchService, "createBranch").mockImplementation((newBranchData: Omit<Branch, "id">) => {
-            const previousBranchID = MOCKbranches[MOCKbranches.length -1]?.id || "0";
+            const previousBranchID: string = mockBranches[mockBranches.length -1]?.id || "0";
             const newBranch: Branch = {
                 id: (Number(previousBranchID) + 1).toString(),
                 ...newBranchData
             }
-            MOCKbranches.push(newBranch);
+            mockBranches.push(newBranch);
             return newBranch;
         })
 
         it("Should add the new Branch to the existing Branches array", () => {
             branchService.createBranch(newBranchData);
 
-            expect(MOCKbranches.length).toBe(3);
+            expect(mockBranches.length).toBe(3);
         })
         it("should return an Branch object with an id property", () => {
             expect(branchService.createBranch(newBranchData)).toHaveProperty("id");
@@ -54,7 +54,7 @@ describe("Branch Service Testing", () => {
 
     describe("Get All Branches Service Test", () => {
         jest.spyOn(branchService, "getAllBranches").mockImplementation(() => {
-            return MOCKbranches;
+            return mockBranches;
         })
 
         it("Should return all Branch records as an array", () => {
@@ -64,27 +64,27 @@ describe("Branch Service Testing", () => {
 
     describe("Get Branch By ID Service Test", () => {
         jest.spyOn(branchService, "getBranch").mockImplementation((id) => {
-            return (MOCKbranches.find(branch => branch.id === id));
+            return (mockBranches.find(branch => branch.id === id));
         })
 
         it("Should return the Branch Data of the given Branch ID", () => {
-            expect(branchService.getBranch("1")).toStrictEqual(MOCKbranches[0])
-            expect(branchService.getBranch("2")).toStrictEqual(MOCKbranches[1])
+            expect(branchService.getBranch("1")).toStrictEqual(mockBranches[0])
+            expect(branchService.getBranch("2")).toStrictEqual(mockBranches[1])
         })
     })
 
     describe("Update Branch Service Test", () => {
-        const updatedData = {
+        const updatedData: Partial<Branch> = {
             address: "Updated Address",
             phone: "Updated Phone Number"
         }
 
         jest.spyOn(branchService, "updateBranch").mockImplementation((id, updatedData) => {
-            const branch = MOCKbranches.find(branch => branch.id === id);
+            const branch: Branch | undefined = mockBranches.find(branch => branch.id === id);
             if (typeof branch === "undefined"){
                 throw new Error(`Branch with ID ${id} not found.`)
             }
-            const safeUpdate = {...updatedData};
+            const safeUpdate: Partial<Branch> = {...updatedData};
             delete safeUpdate.id;
             Object.assign(branch, safeUpdate);
             return branch;
@@ -97,16 +97,16 @@ describe("Branch Service Testing", () => {
         it("Should update the branch data on the branch array", () => {
             branchService.updateBranch("2",updatedData)
 
-            expect(MOCKbranches[1].address).toBe("Updated Address")
-            expect(MOCKbranches[1].phone).toBe("Updated Phone Number")
+            expect(mockBranches[1].address).toBe("Updated Address")
+            expect(mockBranches[1].phone).toBe("Updated Phone Number")
         })
     })
 
     describe("Delete Branch Service Test", () => {
         jest.spyOn(branchService, "deleteBranch").mockImplementation((id) => {
-            const index = MOCKbranches.findIndex(branch => branch.id == id);
+            const index: number = mockBranches.findIndex(branch => branch.id == id);
             if (index !== -1){
-                MOCKbranches.splice(index, 1);
+                mockBranches.splice(index, 1);
                 return true;
             }
             return false;

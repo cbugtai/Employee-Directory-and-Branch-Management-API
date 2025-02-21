@@ -1,4 +1,4 @@
-import { Employee } from "../src/models/employeeModel"
+import { Employee } from "../src/api/v1/models/employeeModel"
 import * as employeeService from "../src/api/v1/services/employeeService"
 
 describe("Employee Services Testing", () => {
@@ -26,7 +26,7 @@ describe("Employee Services Testing", () => {
 
         // Mock the addEmployee fucntion to redirect the push to the mockEmployees array
         jest.spyOn(employeeService, 'addEmployee').mockImplementation((newEmployeeData: Omit<Employee, "id">) => {
-            const previousEmployeeID = mockEmployees[mockEmployees.length - 1]?.id || "0";
+            const previousEmployeeID: string = mockEmployees[mockEmployees.length - 1]?.id || "0";
             const newEmployee: Employee = {
                 id: (Number(previousEmployeeID) + 1).toString(),
                 ...newEmployeeData
@@ -74,17 +74,17 @@ describe("Employee Services Testing", () => {
     })
     
     describe("Update Employee Service Test", () => {
-        const updatedData = {
+        const updatedData: Partial<Employee> = {
             position: "Updated Position",
             department: "Updated Department",
         }
 
         jest.spyOn(employeeService, "updateEmployee").mockImplementation((id, updatedData) => {
-            const employee = mockEmployees.find(employee => employee.id === id)
+            const employee: Employee | undefined = mockEmployees.find(employee => employee.id === id)
             if (typeof employee === "undefined"){
                 throw new Error(`Employee with ID ${id} not found.`)
             }
-            const safeUpdate = {...updatedData};
+            const safeUpdate: Partial<Employee> = {...updatedData};
             delete safeUpdate.id;
 
             Object.assign(employee, safeUpdate);
@@ -106,7 +106,7 @@ describe("Employee Services Testing", () => {
 
     describe("Delete Employee Service Test", () => {
         jest.spyOn(employeeService, "deleteEmployee").mockImplementation((id) => {
-            const index = mockEmployees.findIndex(employee => employee.id === id);
+            const index: number = mockEmployees.findIndex(employee => employee.id === id);
             if (index !== -1){
                 mockEmployees.splice(index, 1);
                 return true;

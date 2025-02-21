@@ -5,5 +5,5 @@ export interface Employee{
     department: string, //department of employee
     email: string,      //email of employee
     phone: string,      //phone number of employee
-    branchID: string     //Branch ID employee works in
+    branchID: string    //Branch ID employee works in
 }

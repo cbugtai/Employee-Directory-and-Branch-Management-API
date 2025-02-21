@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as branchService from "../services/branchService";
-import { Branch } from "src/models/branchModel";
+import { Branch } from "../models/branchModel";
 
 /**
  * @description Create Branch.

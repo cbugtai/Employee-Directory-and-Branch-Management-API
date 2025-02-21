@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as logicService from "../services/logicService";
-import { Employee } from "src/models/employeeModel";
+import { Employee } from "../models/employeeModel";
 
 /** 
  * @description Get All Employees for a Branch

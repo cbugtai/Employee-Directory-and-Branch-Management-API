@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as employeeService from "../services/employeeService";
-import { Employee } from "src/models/employeeModel";
+import { Employee } from "../models/employeeModel";
 
 /**
  * @description Create Employee.
@@ -55,7 +55,7 @@ export const updateEmployee = (req:Request, res: Response): void => {
     try{
         const { id } = req.params;
         const updatedData: Employee = req.body;
-        const updatedEmployee: Employee = employeeService.updateEmployee(id, updatedData);
+        const updatedEmployee: Partial<Employee> = employeeService.updateEmployee(id, updatedData);
         if (updatedEmployee) {
             res.status(200).json({ message: `Employee ID: ${id}, Updated`, data: updatedEmployee});
         } else {

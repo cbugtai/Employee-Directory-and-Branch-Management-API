@@ -77,7 +77,7 @@ describe("Branch Controller Tests", () => {
         })
     })
 
-    describe('getBranch', () => {
+    describe('getBranch Test', () => {
         it('should return a branch by ID', async () => {
             const mockBranch: Branch = { id: '1', name: 'Test Branch', address: '123 Test St', phone: '123-456-7890' };
             mockReq.params = { id: '1' };
@@ -105,7 +105,7 @@ describe("Branch Controller Tests", () => {
         });
     });
 
-    describe('updateBranch', () => {
+    describe('updateBranch Test', () => {
         it('should update a branch and return updated data', async () => {
             const updatedBranch: Branch = { id: '1', name: 'Updated Branch', address: '789 Updated Ave', phone: '999-999-9999' };
             mockReq.params = { id: '1' };
@@ -135,7 +135,7 @@ describe("Branch Controller Tests", () => {
         });
     });
 
-    describe('deleteBranch', () => {
+    describe('deleteBranch Test', () => {
         it('should delete a branch and return success message', async () => {
             mockReq.params = { id: '1' };
             (branchService.deleteBranch as jest.Mock).mockResolvedValue(true);

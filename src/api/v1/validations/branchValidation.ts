@@ -18,7 +18,7 @@ export const branchSchema: ObjectSchema = Joi.object({
     phone: Joi.string().pattern(/^\+?[0-9\s\-()]{7,20}$/).required()
         .messages({
             "any.required": "Phone number is required",
-            "string.empty": "Phone cannot be empty.",
+            "string.empty": "Phone number cannot be empty.",
             "string.pattern.base": "Phone number format is invalid; only digits, spaces, dashes or parentheses allowed"
         }), 
 })

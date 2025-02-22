@@ -35,6 +35,7 @@ export const employeeSchema: ObjectSchema = Joi.object({
     branchID: Joi.string().pattern(/^\d+$/).required()
         .messages({
             "any.required": "Branch Id is required",
+            "string.empty": "Branch Id cannot be empty.",
             "string.pattern.base": "Branch Id must be a number" 
         })
 })

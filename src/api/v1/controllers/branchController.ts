@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as branchService from "../services/branchService";
 import { Branch } from "../models/branchModel";
-import { HTTP_STATUS } from "src/constants/httpConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { successResponse } from "../models/responseModel";
 
 /**
@@ -86,7 +86,7 @@ export const deleteBranch = async (req: Request, res: Response, next: NextFuncti
         
         const success: boolean = await branchService.deleteBranch(req.params.id);
         
-        res.status(HTTP_STATUS.OK).json(successResponse(`Branch ID ${req.params.id} Deleted`));
+        res.status(HTTP_STATUS.OK).json(successResponse(undefined, `Branch ID ${req.params.id} Deleted`));
     } catch (error) {
         next(error);
     }

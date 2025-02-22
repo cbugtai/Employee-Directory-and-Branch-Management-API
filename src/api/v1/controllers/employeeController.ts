@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as employeeService from "../services/employeeService";
 import { Employee } from "../models/employeeModel";
-import { HTTP_STATUS } from "src/constants/httpConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { successResponse } from "../models/responseModel";
 
 /**
@@ -86,7 +86,7 @@ export const deleteEmployee = async (req: Request, res: Response, next: NextFunc
     
         const success: boolean = await employeeService.deleteEmployee(req.params.id);
 
-        res.status(HTTP_STATUS.OK).json(successResponse(`Employee ID: ${req.params.id}, Deleted`));
+        res.status(HTTP_STATUS.OK).json(successResponse(undefined, `Employee ID: ${req.params.id}, Deleted`));
     } catch (error) {
         next(error);
     }

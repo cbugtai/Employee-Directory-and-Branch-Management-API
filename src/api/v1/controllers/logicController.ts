@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as logicService from "../services/logicService";
 import { Employee } from "../models/employeeModel";
-import { HTTP_STATUS } from "src/constants/httpConstants";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { successResponse } from "../models/responseModel";
 
 /** 

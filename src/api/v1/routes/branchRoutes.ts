@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 import * as branchController from "../controllers/branchController";
+import { validateRequest } from "../middleware/validate";
+import { branchSchema, branchIdSchema } from "../validations/branchValidation"
 
 const router: Router = express.Router();
 
@@ -33,7 +35,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Error adding branch
  */
-router.post("/", branchController.createBranch)
+router.post("/", validateRequest(branchSchema), branchController.createBranch)
 
 /**
  * @description Get All Branches.
@@ -77,7 +79,7 @@ router.get("/", branchController.getAllBranches)
  *      500:
  *        description: Error Retrieving Branch.
  */
-router.get("/:id", branchController.getBranch)
+router.get("/:id", validateRequest(branchIdSchema), branchController.getBranch)
 
 /**
  * @description Update Branch.
@@ -115,7 +117,7 @@ router.get("/:id", branchController.getBranch)
  *      500:
  *        description: Error Updating Branch
  */
-router.put("/:id", branchController.updateBranch)
+router.put("/:id", validateRequest(branchSchema), branchController.updateBranch)
 
 /**
  * @description Delete Branch.
@@ -141,6 +143,6 @@ router.put("/:id", branchController.updateBranch)
  *       500:
  *         description: Error Deleting Branch
  */
-router.delete("/:id", branchController.deleteBranch)
+router.delete("/:id", validateRequest(branchIdSchema), branchController.deleteBranch)
 
 export default router;

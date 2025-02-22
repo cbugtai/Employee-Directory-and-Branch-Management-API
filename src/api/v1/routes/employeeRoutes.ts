@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 import * as employeeController from "../controllers/employeeController";
+import { validateRequest } from "../middleware/validate";
+import { employeeSchema, employeeIdSchema } from "../validations/employeeValidation"
 
 const router: Router = express.Router();
 
@@ -39,7 +41,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Error adding employee
  */
-router.post("/", employeeController.createEmployee)
+router.post("/", validateRequest(employeeSchema), employeeController.createEmployee)
 
 /**
  * @description Get All Employees.
@@ -83,7 +85,7 @@ router.get("/", employeeController.getAllEmployees)
  *      500:
  *        description: Error Retrieving Employee.
  */
-router.get("/:id", employeeController.getEmployee)
+router.get("/:id", validateRequest(employeeIdSchema), employeeController.getEmployee)
 
 /**
  * @description Update employee.
@@ -127,7 +129,7 @@ router.get("/:id", employeeController.getEmployee)
  *      500:
  *        description: Error Updating Employee
  */
-router.put("/:id", employeeController.updateEmployee)
+router.put("/:id", validateRequest(employeeSchema), employeeController.updateEmployee)
 
 /**
  * @description Delete employee.
@@ -153,6 +155,6 @@ router.put("/:id", employeeController.updateEmployee)
  *       500:
  *         description: Error Deleting Employee
  */
-router.delete("/:id", employeeController.deleteEmployee)
+router.delete("/:id", validateRequest(employeeIdSchema), employeeController.deleteEmployee)
 
 export default router;

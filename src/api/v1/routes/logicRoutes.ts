@@ -1,5 +1,8 @@
 import express, { Router } from "express";
 import * as logicController from "../controllers/logicController";
+import { validateRequest } from "../middleware/validate";
+import { branchIdSchema } from "../validations/branchValidation"
+import { departmentSchema } from "../validations/employeeValidation"
 
 const router: Router = express.Router();
 
@@ -29,7 +32,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Error Retrieving Employees.
  */
-router.get("/branch/:branchID", logicController.getBranchEmployees)
+router.get("/branch/:branchID", validateRequest(branchIdSchema), logicController.getBranchEmployees)
 
 /**
  * @description Get All Employees by Department
@@ -55,7 +58,7 @@ router.get("/branch/:branchID", logicController.getBranchEmployees)
  *      500:
  *        description: Error Retrieving Employees
  */
-router.get("/department/:department", logicController.getDepartmentEmployees)
+router.get("/department/:department", validateRequest(departmentSchema), logicController.getDepartmentEmployees)
 
 
 export default router;

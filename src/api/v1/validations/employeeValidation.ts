@@ -1,4 +1,5 @@
 import Joi, { ObjectSchema } from "joi";
+import { join } from "path";
 
 export const employeeSchema: ObjectSchema = Joi.object({
     id: Joi.string().optional()
@@ -44,3 +45,11 @@ export const employeeIdSchema: ObjectSchema = Joi.object({
             "string.min": "Id must be a positive number" 
         })
 });
+
+export const departmentSchema: ObjectSchema = Joi.object({
+    department: Joi.string().required()
+        .messages({
+            "any.required": "Department is required",
+            "string.empty": "Department cannot be empty."
+        }),
+})

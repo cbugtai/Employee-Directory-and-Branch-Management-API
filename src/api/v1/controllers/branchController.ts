@@ -12,10 +12,10 @@ import { successResponse } from "../models/responseModel";
 export const createBranch = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
 
-        const createdBranch: Branch = await branchService.createBranch(req.body);
+        const result: Branch = await branchService.createBranch(req.body);
 
         res.status(HTTP_STATUS.CREATED).json(
-            successResponse(createdBranch, "Branch Added")
+            successResponse(result, "Branch Added")
         );
     } catch (error) {
         next(error);
@@ -30,10 +30,10 @@ export const createBranch = async (req: Request, res: Response, next: NextFuncti
 export const getAllBranches = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
 
-        const branches: Branch[] = await branchService.getAllBranches();
+        const result: Branch[] = await branchService.getAllBranches();
 
         res.status(HTTP_STATUS.OK).json(
-            successResponse(branches, "Branches Retrieved")
+            successResponse(result, "Branches Retrieved")
         );
     } catch (error) {
         next(error);
@@ -66,10 +66,10 @@ export const getBranch = async (req: Request, res: Response, next: NextFunction)
 export const updateBranch = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
 
-        const updatedBranch: Branch = await branchService.updateBranch(req.params.id, req.body);
+        const result: Branch = await branchService.updateBranch(req.params.id, req.body);
 
         res.status(HTTP_STATUS.OK).json(
-            successResponse(updatedBranch, `Branch ID ${req.params.id} Updated`)
+            successResponse(result, `Branch ID ${req.params.id} Updated`)
         );
     } catch (error) {
         next(error);
@@ -79,15 +79,14 @@ export const updateBranch = async (req: Request, res: Response, next: NextFuncti
 /**
  * @description Delete Branch.
  * @route DELETE v1/branch/:id
+ * @returns {Promise<void>}
  */
 export const deleteBranch = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
         
-        const success: boolean = branchService.deleteBranch(req.params.id);
+        const success: boolean = await branchService.deleteBranch(req.params.id);
         
-        res.status(HTTP_STATUS.OK).json(
-            { message: `Branch ID ${req.params.id} Deleted`}
-        );
+        res.status(HTTP_STATUS.OK).json(successResponse(`Branch ID ${req.params.id} Deleted`));
     } catch (error) {
         next(error);
     }

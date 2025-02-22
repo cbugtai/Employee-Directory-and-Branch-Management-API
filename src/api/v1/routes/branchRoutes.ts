@@ -117,7 +117,7 @@ router.get("/:id", validateRequest(branchIdSchema, "params"), branchController.g
  *      500:
  *        description: Error Updating Branch
  */
-router.put("/:id", validateRequest(branchSchema, "body"), branchController.updateBranch)
+router.put("/:id", validateRequest(branchIdSchema, "params"), validateRequest(branchSchema, "body"), branchController.updateBranch)
 
 /**
  * @description Delete Branch.

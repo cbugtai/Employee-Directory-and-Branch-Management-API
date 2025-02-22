@@ -30,13 +30,11 @@ export const validate = <T>(schema: ObjectSchema<T>, data: T): void => {
  * @param {ObjectSchema} schema - The Joi schema to validate against.
  * @returns {(req: Request, res: Response, next: NextFunction) => void} The middleware function.
  */
-export const validateRequest = (schema: ObjectSchema): MiddlewareFunction => {
+export const validateRequest = (schema: ObjectSchema, source: "body" | "params" | "query"): MiddlewareFunction => {
 	return (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const data: RequestData = {
-				...req.body,
-				...req.params,
-				...req.query,
+				...req[source],
 			};
 			validate(schema, data);
 			next();

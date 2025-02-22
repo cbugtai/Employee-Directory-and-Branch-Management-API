@@ -35,7 +35,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Error adding branch
  */
-router.post("/", validateRequest(branchSchema), branchController.createBranch)
+router.post("/", validateRequest(branchSchema, "body"), branchController.createBranch)
 
 /**
  * @description Get All Branches.
@@ -79,7 +79,7 @@ router.get("/", branchController.getAllBranches)
  *      500:
  *        description: Error Retrieving Branch.
  */
-router.get("/:id", validateRequest(branchIdSchema), branchController.getBranch)
+router.get("/:id", validateRequest(branchIdSchema, "params"), branchController.getBranch)
 
 /**
  * @description Update Branch.
@@ -117,7 +117,7 @@ router.get("/:id", validateRequest(branchIdSchema), branchController.getBranch)
  *      500:
  *        description: Error Updating Branch
  */
-router.put("/:id", validateRequest(branchSchema), branchController.updateBranch)
+router.put("/:id", validateRequest(branchSchema, "body"), branchController.updateBranch)
 
 /**
  * @description Delete Branch.
@@ -143,6 +143,6 @@ router.put("/:id", validateRequest(branchSchema), branchController.updateBranch)
  *       500:
  *         description: Error Deleting Branch
  */
-router.delete("/:id", validateRequest(branchIdSchema), branchController.deleteBranch)
+router.delete("/:id", validateRequest(branchIdSchema, "params"), branchController.deleteBranch)
 
 export default router;

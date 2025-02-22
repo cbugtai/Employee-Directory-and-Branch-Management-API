@@ -41,7 +41,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Error adding employee
  */
-router.post("/", validateRequest(employeeSchema), employeeController.createEmployee)
+router.post("/", validateRequest(employeeSchema, "body"), employeeController.createEmployee)
 
 /**
  * @description Get All Employees.
@@ -85,7 +85,7 @@ router.get("/", employeeController.getAllEmployees)
  *      500:
  *        description: Error Retrieving Employee.
  */
-router.get("/:id", validateRequest(employeeIdSchema), employeeController.getEmployee)
+router.get("/:id", validateRequest(employeeIdSchema, "params"), employeeController.getEmployee)
 
 /**
  * @description Update employee.
@@ -129,7 +129,7 @@ router.get("/:id", validateRequest(employeeIdSchema), employeeController.getEmpl
  *      500:
  *        description: Error Updating Employee
  */
-router.put("/:id", validateRequest(employeeSchema), employeeController.updateEmployee)
+router.put("/:id", validateRequest(employeeIdSchema, "params"), validateRequest(employeeSchema, "body"), employeeController.updateEmployee)
 
 /**
  * @description Delete employee.
@@ -155,6 +155,6 @@ router.put("/:id", validateRequest(employeeSchema), employeeController.updateEmp
  *       500:
  *         description: Error Deleting Employee
  */
-router.delete("/:id", validateRequest(employeeIdSchema), employeeController.deleteEmployee)
+router.delete("/:id", validateRequest(employeeIdSchema, "params"), employeeController.deleteEmployee)
 
 export default router;

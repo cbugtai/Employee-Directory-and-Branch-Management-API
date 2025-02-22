@@ -32,7 +32,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Error Retrieving Employees.
  */
-router.get("/branch/:branchID", validateRequest(branchIdSchema), logicController.getBranchEmployees)
+router.get("/branch/:branchID", validateRequest(branchIdSchema, "params"), logicController.getBranchEmployees)
 
 /**
  * @description Get All Employees by Department
@@ -58,7 +58,7 @@ router.get("/branch/:branchID", validateRequest(branchIdSchema), logicController
  *      500:
  *        description: Error Retrieving Employees
  */
-router.get("/department/:department", validateRequest(departmentSchema), logicController.getDepartmentEmployees)
+router.get("/department/:department", validateRequest(departmentSchema, "params"), logicController.getDepartmentEmployees)
 
 
 export default router;

@@ -1,22 +1,32 @@
 import { Employee } from "../models/employeeModel";
-import employees from "../../../data/employeeData";
+import * as firebase from "../repositories/firestoreRepository";
 
 /**
- * Get All Employees for a given Branch
- * 
- * @param branchID - Id of the branch
- * @returns {Employee[]} - list of employees in in the given branch
+ * @description Get All Employees for a given Branch
+ * @param {string} branchID - Id of the branch
+ * @returns {Promise<Employee[]>} - list of employees in in the given branch
+ * @throws {Error} when list is empty
  */
-export const getBranchEmployees = (branchID: string): Employee[] | undefined => {
-    return employees.filter(employee => employee.branchID === branchID);
+export const getBranchEmployees = async (branchID: string): Promise<Employee[]> => {
+    const snapshot: FirebaseFirestore.QuerySnapshot = await firebase.getDocumentsByFieldValue("employees", "branchID", branchID);
+
+    return snapshot.docs.map((doc) => {
+        const data: FirebaseFirestore.DocumentData = doc.data();
+        return { id: doc.id, ...data } as Employee
+    });
 }
 
 /**
- * get all employees for a given department
- * 
- * @param department - department name 
- * @returns {Employee[]} - list of employees in the given department
+ * @description Get all employees for a given department
+ * @param {string} department - department name 
+ * @returns {Promise<Employee[]>} - list of employees in the given department
+ * @throws {Error} when list is empty
  */
-export const getDepartmentEmployees = (department: string): Employee[] | undefined => {
-    return employees.filter(employee => employee.department === department);
+export const getDepartmentEmployees = async (department: string): Promise<Employee[]> => {
+    const snapshot: FirebaseFirestore.QuerySnapshot = await firebase.getDocumentsByFieldValue("employees", "department", department);
+
+    return snapshot.docs.map((doc) => {
+        const data: FirebaseFirestore.DocumentData = doc.data();
+        return { id: doc.id, ...data } as Employee
+    });
 }

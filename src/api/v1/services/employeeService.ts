@@ -1,89 +1,67 @@
 import { Employee } from "../models/employeeModel";
-import employees from "../../../data/employeeData";
+import * as firebase from "../repositories/firestoreRepository";
+import { DocumentData } from "node_modules/firebase-admin/lib/firestore";
+import { ServiceError } from "../errors/errors";
 
-//Create Employee
-/**
- * Adds new employee
- * 
- * @param employeeData employee information, must include Name, Position, Department, Email, Phone and BranchID
- * @throws {error} when any of the required fields are missing
- * @returns {Employee} the new employee with generated ID 
- */
-export const addEmployee = (newEmployeeData: Omit<Employee, "id">): Employee => {
-    if (
-        !newEmployeeData.name       || 
-        !newEmployeeData.position   || 
-        !newEmployeeData.department ||
-        !newEmployeeData.email      ||
-        !newEmployeeData.phone      ||
-        !newEmployeeData.branchID
-    ) {
-        throw new Error(
-            "Missing required fields. Required Fields include: Name, Position, Department, Email, Phone and BranchID"
-        );
-    }
-
-    const previousEmployeeID: string = employees[employees.length -1]?.id || "0";
-
-    const newEmployee: Employee = {
-        id:         (Number(previousEmployeeID) + 1).toString(),
-        ...newEmployeeData
-    }
-
-    employees.push(newEmployee);
-    return newEmployee;
-}
-
-//Get All Employees
-export const getAllEmployees = (): Employee[] => {
-    return employees;
-}
+const COLLECTION: string = "employees";
 
 /**
- * Get Employee by ID
- * 
- * @param id id of the employee
- * @returns {Employee} if employee with the given id exists otherwise returns {undefined}
+ * @description Adds new Employee
+ * @param {Partial<Employee>} newEmployeeData - employee information, must include required fields
+ * @returns {Promise<Employee>} The new Employee with generated ID
  */
-export const getEmployee = (id:string): Employee | undefined => {
-    return (employees.find(employee => employee.id === id));
-}
+export const addEmployee = async (newEmployeeData: Partial<Employee>): Promise<Employee> => {
+    const id: string = await firebase.createDocument(COLLECTION, newEmployeeData);
+    return { id, ...newEmployeeData } as Employee;
+};
 
-//Update Employee
 /**
- * update existing employee data
- * 
- * @param id - id of the employee to be updated
- * @param updatedData - Employee data with updated fields
- * @throws {Error} When given Employee ID doesnt exist
- * @returns {Employee} The updated employee data
+ * @description Get All Employees
+ * @returns {Promise<Employee[]>} List of all Employees
  */
-export const updateEmployee = (id:string, updatedData: Partial<Employee>): Partial<Employee> => {
-    const employee: Partial<Employee> | undefined = employees.find(employee => employee.id === id);
+export const getAllEmployees = async (): Promise<Employee[]> => {
+    const snapshot: FirebaseFirestore.QuerySnapshot = await firebase.getDocuments(COLLECTION);
+    return snapshot.docs.map((doc) => {
+        const data: FirebaseFirestore.DocumentData = doc.data();
+        return { id: doc.id, ...data } as Employee;
+    });
+};
 
-    if (typeof employee === "undefined"){
-        throw new Error(`Employee with ID ${id} not found.`)
-    }
-
-    const safeUpdate: Partial<Employee> = {...updatedData};
-    delete safeUpdate.id;
-
-    Object.assign(employee, safeUpdate);
-    return employee;
-}
-
-//Delete Employee
 /**
- * removes an employee from the employees database
- * 
- * @param id - id of the employee to be deleted
- * @returns {boolean} true if employee was removed, false otherwise
+ * @description Get Employee by ID
+ * @param {string} id - id of the Employee
+ * @throws {Error} - error when employee id doesn't exist
+ * @returns {Promise<Employee>} - returns Employee Data of given employee id
  */
-export const deleteEmployee = (id:string): boolean => {
-    const index: number = employees.findIndex(employee => employee.id === id);
-    if (index !== -1){
-        employees.splice(index, 1);
-        return true;
+export const getEmployee = async (id: string): Promise<Employee> => {
+    const snapshot: FirebaseFirestore.DocumentSnapshot = await firebase.getDocumentById(COLLECTION, id);
+    const data: DocumentData | undefined = snapshot.data();
+
+    if (data) {
+        return { id: snapshot.id, ...data } as Employee;
+    } else {
+        throw new ServiceError(`Employee ID not found`, "DOCUMENT_NOT_FOUND", 404);
     }
-    return false;
-}
+};
+
+/**
+ * @description Updates Existing Employee Data
+ * @param {string} id - id of the employee to be updated
+ * @param {Partial<Employee>} updatedData - object with updated Employee Data
+ * @throws {Error} - error when employee id doesn't exist
+ * @returns {Promise<Employee>} - the updated Employee Data
+ */
+export const updateEmployee = async (id: string, updatedData: Partial<Employee>): Promise<Employee> => {
+    await firebase.updateDocument(COLLECTION, id, updatedData);
+    return { id, ...updatedData } as Employee;
+};
+
+/**
+ * @description Deletes an Employee
+ * @param {string} id - id of the Employee to be deleted
+ * @throws {Error} - error when employee id doesn't exist
+ * @returns {Promise<void>}
+ */
+export const deleteEmployee = async (id: string): Promise<void> => {
+    await firebase.deleteDocument(COLLECTION, id);
+};

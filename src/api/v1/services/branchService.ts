@@ -40,18 +40,9 @@ export const getBranch = async (id: string): Promise<Branch> => {
 
     const data: DocumentData | undefined = snapshot.data();
     if (data) {
-        return {
-            id: snapshot.id,
-            name: data.name,
-            address: data.address,
-            phone: data.phone
-        } as Branch
+        return { id: snapshot.id, ...data } as Branch
     } else {
-        throw new ServiceError(
-            `Id not found`,
-            "DOCUMENT_NOT_FOUND",
-            404
-        );
+        throw new ServiceError("Id Not Found", "DOCUMENT_NOT_FOUND", 404);
     }
 }
 

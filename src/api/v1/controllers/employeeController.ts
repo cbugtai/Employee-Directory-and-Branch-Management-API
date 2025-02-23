@@ -84,7 +84,7 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
 export const deleteEmployee = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
     
-        const success: boolean = await employeeService.deleteEmployee(req.params.id);
+        await employeeService.deleteEmployee(req.params.id);
 
         res.status(HTTP_STATUS.OK).json(successResponse(undefined, `Employee ID: ${req.params.id}, Deleted`));
     } catch (error) {

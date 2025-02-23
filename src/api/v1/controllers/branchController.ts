@@ -84,7 +84,7 @@ export const updateBranch = async (req: Request, res: Response, next: NextFuncti
 export const deleteBranch = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
         
-        const success: boolean = await branchService.deleteBranch(req.params.id);
+        await branchService.deleteBranch(req.params.id);
         
         res.status(HTTP_STATUS.OK).json(successResponse(undefined, `Branch ID ${req.params.id} Deleted`));
     } catch (error) {

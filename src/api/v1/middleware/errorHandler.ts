@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { RepositoryError, ServiceError } from "../errors/errors";
+import { RepositoryError, ServiceError, ValidationError } from "../errors/errors";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { errorResponse } from "../models/responseModel";
 
@@ -51,7 +51,7 @@ const errorHandler = (
     // Log the error message for debugging
     console.error(`Error: ${err.message}`);
 
-    if (err instanceof RepositoryError || err instanceof ServiceError) {
+    if (err instanceof RepositoryError || err instanceof ServiceError || err instanceof ValidationError) {
         res.status(err.statusCode).json(errorResponse(err.message, err.code));
     } else {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(

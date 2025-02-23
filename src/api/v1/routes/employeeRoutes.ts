@@ -103,31 +103,31 @@ router.get("/:id", validateRequest(employeeIdSchema, "params"), employeeControll
  *           type: string
  *         required: true
  *         description: ID of the employee to be updated
- *    requestBody:
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              name:
- *                type: string
- *              position:
- *                type: string
- *              department:
- *                type: string
- *              email:
- *                type: string
- *              phone:
- *                type: string
- *              branchID:
- *                type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               position:
+ *                 type: string
+ *               department:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               branchID:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Employee ID ${id} Updated
- *      404:
- *        description: Employee ID ${id} Not Found
- *      500:
- *        description: Error Updating Employee
+ *       404:
+ *         description: Employee ID ${id} Not Found
+ *       500:
+ *         description: Error Updating Employee
  */
 router.put("/:id", validateRequest(employeeIdSchema, "params"), validateRequest(employeeSchema, "body"), employeeController.updateEmployee)
 

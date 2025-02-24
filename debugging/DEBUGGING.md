@@ -69,20 +69,30 @@
 -   Getting a step-by-step look at my getEmployee service function allows me to understand my overall code better 
     especially the middleware for firestore and the responseModels
 
-## Scenario 3: [Title of the Scenario]
+## Scenario 3: Error Handling Middleware
 
--   **Breakpoint Location:** [File and line number]
--   **Objective:** [What you are investigating or trying to understand]
+-   **Breakpoint Location:** employeeController.ts Line 50
+-   **Objective:** Investigating how my services, specifically getEmployee handles errors
 
 ### Debugger Observations
 
--   **Variable States:** [List key variables and their values]
--   **Call Stack:** [Summarize the function sequence leading to the breakpoint]
--   **Behavior:** [Describe what happens at this point in the program]
+-   **Variable States:** req.params = { id: "invalid-id" }
+                        error = {
+                                name: "RepositoryError",
+                                code: "DOCUMENT_NOT_FOUND",
+                                statusCode: 404,
+                                }
+-   **Call Stack:** The endpoint gets called and the request passed through validation.
+-   **Behavior:** The controller calls the employeeService.getEmployee method using the request parameter id,
+                then the firebase.getDocumentById function gets called with "employee" collection and the Id,
+                the getDocumentById function then queries the firestore database using the "employee" collection and id
+                due to the id being invalid, firestore returns undefined document and getDocumentById throws an error,
+                the controller then catches that error and sends it to the nextFunction in the route then done?
 
 ### Analysis
 
--   What did you learn from this scenario?
--   Did you observe any unexpected behavior? If so, what might be the cause?
--   Are there areas for improvement or refactoring in this part of the code?
--   How does this enhance your understanding of the overall project?
+-   My error handling middleware is not being utilized for some reason
+-   Yes, I expected my error handling middleware to get called at some point when my service throws an error
+-   I believe the issue lies in app.ts somehow my errorhandling route isnt getting applied properly 
+-   Shows me that my error hadnling middleware is having issues which means its having issues not only on this 
+    endpoint but all other endpoints.

@@ -1,132 +1,142 @@
-import { Employee } from "../src/api/v1/models/employeeModel"
-import * as employeeService from "../src/api/v1/services/employeeService"
+import * as employeeService from "../src/api/v1/services/employeeService";
+import * as firebase from "../src/api/v1/repositories/firestoreRepository";
+import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot } from "node_modules/firebase-admin/lib/firestore";
+import { Employee } from "../src/api/v1/models/employeeModel";
 
-describe("Employee Services Testing", () => {
-    let mockEmployees: Employee[];
+jest.mock("../src/api/v1/repositories/firestoreRepository");
 
-    beforeEach(() => {
-        mockEmployees = [
-            { id: "1", name: "Alice Johnson", position: "Branch Manager", department: "Management", email: "alice.johnson@pixell-river.com", phone: "604-555-0148", branchID: "1" },
-            { id: "2", name: "Amandeep Singh", position: "Customer Service Representative", department: "Customer Service", email: "amandeep.singh@pixell-river.com", phone: "780-555-0172", branchID: "2" },
-            { id: "3", name: "Maria Garcia", position: "Loan Officer", department: "Loans", email: "maria.garcia@pixell-river.com", phone: "204-555-0193", branchID: "3" },
-            { id: "4", name: "James Wilson", position: "IT Support Specialist", department: "IT", email: "james.wilson@pixell-river.com", phone: "604-555-0134", branchID: "1" },
-        ];
+describe("Employee Services Test", () => {
+    describe("addEmployee Test", () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it("Should return the employee on successful request", async () => {
+            const mockID: string = "1";
+            const mockData: Partial<Employee> = {
+                name: "John Doe",
+                position: "Software Engineer",
+                department: "Engineering",
+                email: "johndoe@example.com",
+                phone: "123-456-7890",
+                branchID: "branch1"
+            };
+            (firebase.createDocument as jest.Mock).mockResolvedValue(mockID);
+
+            const result: Employee = await employeeService.addEmployee(mockData);
+
+            expect(firebase.createDocument).toHaveBeenCalled();
+            expect(result).toEqual({
+                id: "1",
+                ...mockData
+            });
+        });
     });
 
-    describe("Create Employee Service test", () => {
-
-        const newEmployeeData = {
-            name: "Ethan Brooks",
-            position: "Data Analyst",
-            department: "Finance",
-            email: "ethan.brooks@pixell-river.com",
-            phone: "204-555-0500",
-            branchID: "5"
-        }
-
-        // Mock the addEmployee fucntion to redirect the push to the mockEmployees array
-        jest.spyOn(employeeService, 'addEmployee').mockImplementation((newEmployeeData: Omit<Employee, "id">) => {
-            const previousEmployeeID: string = mockEmployees[mockEmployees.length - 1]?.id || "0";
-            const newEmployee: Employee = {
-                id: (Number(previousEmployeeID) + 1).toString(),
-                ...newEmployeeData
-            };
-            mockEmployees.push(newEmployee); // Redirect to mock array
-            return newEmployee;
+    describe("getAllEmployees Test", () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
         });
-        
-        it("Should add the new Employee to the existing Employees array", () => {
-            employeeService.addEmployee(newEmployeeData);
 
-            expect(mockEmployees.length).toBe(5);
-        })
+        it("should return all employees on successful request", async () => {
+            const mockDocs: QueryDocumentSnapshot[] = [
+                {
+                    id: "emp1",
+                    data: () => ({
+                        name: "Jane Doe",
+                        position: "Product Manager",
+                        department: "Product",
+                        email: "janedoe@example.com",
+                        phone: "987-654-3210",
+                        branchID: "branch2"
+                    } as DocumentData),
+                } as QueryDocumentSnapshot
+            ];
 
-        it("should return an employee object with an id property", () => {
-            expect(employeeService.addEmployee(newEmployeeData)).toHaveProperty("id");
-        })
+            (firebase.getDocuments as jest.Mock).mockResolvedValue({ docs: mockDocs } as QuerySnapshot);
 
-        it("Should return the new employee data", () => {
-            expect(employeeService.addEmployee(newEmployeeData)).toStrictEqual({id: "5", ...newEmployeeData})
-        })
-    })
+            const result: Employee[] = await employeeService.getAllEmployees();
 
-    describe("Get All Employees Service Test", () => {
-        jest.spyOn(employeeService, "getAllEmployees").mockImplementation(() => {
-            return mockEmployees;
-        })
+            expect(firebase.getDocuments).toHaveBeenCalled();
+            expect(result).toEqual([
+                {
+                    id: "emp1",
+                    name: "Jane Doe",
+                    position: "Product Manager",
+                    department: "Product",
+                    email: "janedoe@example.com",
+                    phone: "987-654-3210",
+                    branchID: "branch2"
+                }
+            ]);
+        });
+    });
 
-        it("Should return all employee records as an array", () => {
-            expect(employeeService.getAllEmployees().length).toBe(4)
-        })
-    })
+    describe("getEmployee Test", () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
 
-    describe("Get Employee By ID Service Test", () => {
-        jest.spyOn(employeeService, "getEmployee").mockImplementation((id) => {
-            return (mockEmployees.find(employee => employee.id === id));
-        })
+        it("should return employee data for a valid ID", async () => {
+            const mockDoc: Partial<DocumentSnapshot> = {
+                id: "emp1",
+                data: () => ({
+                    name: "Jane Doe",
+                    position: "Product Manager",
+                    department: "Product",
+                    email: "janedoe@example.com",
+                    phone: "987-654-3210",
+                    branchID: "branch2"
+                })
+            };
 
-        it("Should return the employee Data of the given employee ID", () => {
-            expect(employeeService.getEmployee("1")).toStrictEqual(mockEmployees[0])
-            expect(employeeService.getEmployee("2")).toStrictEqual(mockEmployees[1])
-            expect(employeeService.getEmployee("3")).toStrictEqual(mockEmployees[2])
-            expect(employeeService.getEmployee("4")).toStrictEqual(mockEmployees[3])
-        })
-    })
-    
-    describe("Update Employee Service Test", () => {
-        const updatedData: Partial<Employee> = {
-            position: "Updated Position",
-            department: "Updated Department",
-        }
+            (firebase.getDocumentById as jest.Mock).mockResolvedValue(mockDoc);
 
-        jest.spyOn(employeeService, "updateEmployee").mockImplementation((id, updatedData) => {
-            const employee: Employee | undefined = mockEmployees.find(employee => employee.id === id)
-            if (typeof employee === "undefined"){
-                throw new Error(`Employee with ID ${id} not found.`)
-            }
-            const safeUpdate: Partial<Employee> = {...updatedData};
-            delete safeUpdate.id;
+            const result: Employee = await employeeService.getEmployee("emp1");
 
-            Object.assign(employee, safeUpdate);
-            return employee
-        })
+            expect(firebase.getDocumentById).toHaveBeenCalledWith("employees", "emp1");
+            expect(result).toEqual({
+                id: "emp1",
+                name: "Jane Doe",
+                position: "Product Manager",
+                department: "Product",
+                email: "janedoe@example.com",
+                phone: "987-654-3210",
+                branchID: "branch2"
+            });
+        });
+    });
 
-        it("Should return the updated data of the employee", () => {
-            expect(employeeService.updateEmployee("1",updatedData).position).toBe("Updated Position")
-            expect(employeeService.updateEmployee("1",updatedData).department).toBe("Updated Department")
-        })
+    describe("updateEmployee Test", () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
 
-        it("Should update the employee data on the employees array", () => {
-            employeeService.updateEmployee("2",updatedData)
+        it("should update employee data for a valid ID", async () => {
+            const updatedData: Partial<Employee> = {
+                position: "Senior Product Manager",
+                phone: "111-222-3333"
+            };
 
-            expect(mockEmployees[1].position).toBe("Updated Position")
-            expect(mockEmployees[1].department).toBe("Updated Department")
-        })
-    })
+            (firebase.updateDocument as jest.Mock).mockResolvedValue(undefined);
 
-    describe("Delete Employee Service Test", () => {
-        jest.spyOn(employeeService, "deleteEmployee").mockImplementation((id) => {
-            const index: number = mockEmployees.findIndex(employee => employee.id === id);
-            if (index !== -1){
-                mockEmployees.splice(index, 1);
-                return true;
-            }
-            return false;
-        })
+            await employeeService.updateEmployee("emp1", updatedData);
 
-        it("Should delete the employee from the employees array", () => {
-            employeeService.deleteEmployee("3")
+            expect(firebase.updateDocument).toHaveBeenCalledWith("employees", "emp1", updatedData);
+        });
+    });
 
-            expect(mockEmployees.length).toBe(3)
-            expect(mockEmployees.map(employee => employee.id)).toStrictEqual(["1","2","4"])
-        })
+    describe("deleteEmployee Test", () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
 
-        it("Should return true if valid id is given", () => {
-            expect(employeeService.deleteEmployee("2")).toBeTruthy()
-        })
-        it("Should return false if invalid id is given", () => {
-            expect(employeeService.deleteEmployee("16")).toBeFalsy()
-            expect(employeeService.deleteEmployee("sixteen")).toBeFalsy()
-        })
-    })
-}) 
+        it("should delete employee for a valid ID", async () => {
+            (firebase.deleteDocument as jest.Mock).mockResolvedValue(undefined);
+
+            await employeeService.deleteEmployee("emp1");
+
+            expect(firebase.deleteDocument).toHaveBeenCalledWith("employees", "emp1");
+        });
+    });
+});

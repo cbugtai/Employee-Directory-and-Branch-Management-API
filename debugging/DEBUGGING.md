@@ -1,60 +1,98 @@
 # Debugging Analysis
 
-## Scenario 1: Issue with create employee on Postman
+## Scenario 1: Validation Logic
 
--   **Breakpoint Location:** employeeController.ts line 7
--   **Objective:** When I use postman to test the create employee endpoint, it returns an error 
-
-### Debugger Observations
-
--   **Variable States:** {employeeData: undefined, newEmployee: undefined}
--   **Call Stack:** createEmployee endpoint gets called
--   **Behavior:** its not recieving the body data from the request which throws an error when it calls the addEmployee function
-
-### Analysis
-
--   My createEmployee endpoint is not working properly
--   There could be something wrong with my controller code or im missing a dependency of maybe its Postman's fault.
-
--   The issue was that I forgot to add `app.use(express.json());` in app.ts so it wasn't parsing the body of the request
--   this issue doesn't only affect one function, this issue is affecting other fucntions i have and will 
-    no doubt affect other functions that i have yet to add. fixing this issue no doubt fixed several issues with my code 
-
-## Scenario 2: Branch Management Logic (Update Branch)
-
--   **Breakpoint Location:** branchService.ts Line 60
--   **Objective:** How the logic of the updateBranch function works
+-   **Breakpoint Location:** Validate.ts Line 36
+-   **Objective:** Investigating the Validation Logic of my code specifically for update branch
 
 ### Debugger Observations
 
--   **Variable States:** arguments = (id: "11", updateData: {id, address, name, phone}),
-                other key variables = (branch: {id, address, name, phone}, safeUpdate: {address, name, phone})
--   **Call Stack:** updateBranch on branchController gets called then calls updateBranch on branchService
--   **Behavior:** updateBranch finds the branch that matches the given branchID then deletes the id property of the 
-                updateData object to create a safeUpdate object then assigns the safeUpdate object data to the branch data.
+-   **Variable States:** data = {
+                                name: "",
+                                address: "317-A Fisher Road, Arborg, MB, R0C 0A0",
+                                phone: "204-555-3461",
+                                }
+                         error = "Validation error: Name cannot be empty."
+-   **Call Stack:** from the router, it calls validateRequest for the parameter value 
+                    which then calls validate to check the request parameter (branchID) 
+                    against the branchID Schema when it passes, it then calls validateRequest 
+                    again for the request body which then calls validate to check the body 
+                    against the branchSchema 
+-   **Behavior:** The validate throws an error due to the empty name.
 
 ### Analysis
 
--   How the data changes as it goes through the updateBranch function
--   The function worked as intended
--   Maybe implement a way to create a branch instead if the id is missing.
--   It gave me a deeper undestanding on how object data works which is used all over my code
+-   I Understood how my validation middleware works better.
+-   No unexpected behavior observed.
+-   I can't think of any ways to improve this at this time
+-   This is the validation middleware of my code, no matter which 
+    schema is used or which route is using it this is the same code 
+    being used, understanding it better helps me understand how 
+    validation works for the whole project
 
-## Scenario 3: Exploring the Logical Operation Relationships
+## Scenario 2: Firestore Operations
 
--   **Breakpoint Location:** logicService.ts Line 11
--   **Objective:** Explore the relationship between employee and branches
+-   **Breakpoint Location:** employeeController.ts Line 50
+-   **Objective:** investigating how my services interacts with the Firestore database
+                    specifically for getEmployee
 
 ### Debugger Observations
 
--   **Variable States:** branchID = 8, employees = Array(20), return value = array(2)
--   **Call Stack:** getBranchEmployees on logicController.ts gets called then calls on getBranchEmployees on logicService.ts
--   **Behavior:** getBranchEmployees filters out all objects that doesnt have the property {branchID: "8"} from the employees array
-                    then returns the rest as an array of objects
+-   **Variable States:** req.params = { id: "8huwzwR8bScljUuBSj4e" }
+                         successResponse Return Value = 
+                         {
+                            "status": "success",
+                            "data": {
+                                "id": "8huwzwR8bScljUuBSj4e",
+                                "name": "Alice Johnson",
+                                "position": "Branch Manager",
+                                "department": "Management",
+                                "email": "alice.johnson@pixell-river.com",
+                                "phone": "604-555-0148",
+                                "branchID": "1"
+                            },
+                            "message": "Employee ID 8huwzwR8bScljUuBSj4e Retrieved"
+                        }
+-   **Call Stack:** The endpoint gets called and the request passed through validation.
+-   **Behavior:** The controller calls the employeeService.getEmployee method using the request parameter id,
+                then the firebase.getDocumentById function gets called with "employee" collection and the Id,
+                the getDocumentById function then queries the firestore database using the "employee" collection and id
+                and gets the snapshot for that document, its then returned to employeeService.getEmployee which parses that 
+                snapshot data into an Employee type and returns it to employeeController.getEmployee as result which is
+                then sent to successResponse with a message which then formats it for the response.
 
 ### Analysis
 
--   id is not the only way the employee object can be filtered by, other properties can also be used
--   no, the logic is working as intended
--   i cant see any areas that need improving at this time
--   it gives me a better understanding of how to manipulate an array of objects which is used on most functions in my code.
+-   I learned how my service works when called successfully including interaction with the firestore database
+-   No unexpected behavior observed
+-   No areas of improvemen found at this time
+-   Getting a step-by-step look at my getEmployee service function allows me to understand my overall code better 
+    especially the middleware for firestore and the responseModels
+
+## Scenario 3: Error Handling Middleware
+
+-   **Breakpoint Location:** employeeController.ts Line 50
+-   **Objective:** Investigating how my services, specifically getEmployee handles errors
+
+### Debugger Observations
+
+-   **Variable States:** req.params = { id: "invalid-id" }
+                        error = {
+                                name: "RepositoryError",
+                                code: "DOCUMENT_NOT_FOUND",
+                                statusCode: 404,
+                                }
+-   **Call Stack:** The endpoint gets called and the request passed through validation.
+-   **Behavior:** The controller calls the employeeService.getEmployee method using the request parameter id,
+                then the firebase.getDocumentById function gets called with "employee" collection and the Id,
+                the getDocumentById function then queries the firestore database using the "employee" collection and id
+                due to the id being invalid, firestore returns undefined document and getDocumentById throws an error,
+                the controller then catches that error and sends it to the nextFunction in the route then done?
+
+### Analysis
+
+-   My error handling middleware is not being utilized for some reason
+-   Yes, I expected my error handling middleware to get called at some point when my service throws an error
+-   I believe the issue lies in app.ts somehow my errorhandling route isnt getting applied properly 
+-   Shows me that my error hadnling middleware is having issues which means its having issues not only on this 
+    endpoint but all other endpoints.

@@ -12,7 +12,7 @@ import { successResponse } from "../models/responseModel";
 export const getBranchEmployees = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
         
-        const result: Employee[] | undefined = logicService.getBranchEmployees(req.params.branchID); 
+        const result: Employee[] | undefined = await logicService.getBranchEmployees(req.params.branchID); 
         
         res.status(HTTP_STATUS.OK).json(
             successResponse(result, `Employees in Branch ID ${req.params.branchID} Retrieved`)
@@ -30,7 +30,7 @@ export const getBranchEmployees = async (req: Request, res: Response, next: Next
 export const getDepartmentEmployees = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
         
-        const result: Employee[] | undefined = logicService.getDepartmentEmployees(req.params.department); 
+        const result: Employee[] | undefined = await logicService.getDepartmentEmployees(req.params.department); 
         
         res.status(HTTP_STATUS.OK).json(
             successResponse(result, `Employees in ${req.params.department} Department Retrieved`)

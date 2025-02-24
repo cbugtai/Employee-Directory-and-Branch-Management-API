@@ -47,7 +47,7 @@ export const getAllEmployees = async (req: Request, res: Response, next: NextFun
  */
 export const getEmployee = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
-        debugger;
+        //debugger;
         const result: Employee | undefined = await employeeService.getEmployee(req.params.id); 
         
         res.status(HTTP_STATUS.OK).json(

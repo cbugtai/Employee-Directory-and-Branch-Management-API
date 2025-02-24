@@ -39,7 +39,7 @@ describe("Branch Controller Tests", () => {
         })
 
         it("Should call next if an error occurs", async () => {
-            const mockError = new Error("Test Error");
+            const mockError: Error = new Error("Test Error");
             (branchService.createBranch as jest.Mock).mockRejectedValue(mockError);
 
             await branchController.createBranch(mockReq as Request, mockRes as Response, mockNext)
@@ -68,7 +68,7 @@ describe("Branch Controller Tests", () => {
         })
 
         it("Should call next if an error occurs", async () => {
-            const mockError = new Error("Test Error");
+            const mockError: Error = new Error("Test Error");
             (branchService.getAllBranches as jest.Mock).mockRejectedValue(mockError);
 
             await branchController.getAllBranches(mockReq as Request, mockRes as Response, mockNext)
@@ -95,7 +95,7 @@ describe("Branch Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { id: '1' };
             (branchService.getBranch as jest.Mock).mockRejectedValue(error);
 
@@ -124,7 +124,7 @@ describe("Branch Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { id: '1' };
             mockReq.body = { name: 'Updated Branch', address: '789 Updated Ave', phone: '999-999-9999' };
             (branchService.updateBranch as jest.Mock).mockRejectedValue(error);
@@ -151,7 +151,7 @@ describe("Branch Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { id: '1' };
             (branchService.deleteBranch as jest.Mock).mockRejectedValue(error);
 

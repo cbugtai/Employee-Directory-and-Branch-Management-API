@@ -1,7 +1,7 @@
 import { initializeApp, cert, ServiceAccount } from "firebase-admin/app";
 import { getFirestore, Firestore } from "firebase-admin/firestore";
 
-const serviceAccountJSON = process.env.FIREBASE_KEY;
+const serviceAccountJSON: string | undefined = process.env.FIREBASE_KEY;
 
 if (!serviceAccountJSON){
     throw new Error("FIREBASE_KEY env var is not met")

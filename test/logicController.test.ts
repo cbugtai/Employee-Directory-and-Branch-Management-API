@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import * as logicService from '../src/api/v1/services/logicService';
 import * as logicController from '../src/api/v1/controllers/logicController';
 import { HTTP_STATUS } from '../src/constants/httpConstants';
+import { Employee } from "src/api/v1/models/employeeModel";
 
 jest.mock("../src/api/v1/services/logicService")
 
@@ -22,7 +23,7 @@ describe('Logic Controller Test', () => {
 
     describe('getBranchEmployees Test', () => {
         it('should return employees for a given branch', async () => {
-            const mockEmployees = [
+            const mockEmployees: Employee[] = [
                 { id: '1', name: 'John Doe', position: 'Developer', department: 'Engineering', email: 'john.doe@example.com', phone: '123-456-7890', branchID: '101' },
                 { id: '2', name: 'Jane Smith', position: 'Manager', department: 'Sales', email: 'jane.smith@example.com', phone: '987-654-3210', branchID: '101' }
             ];
@@ -41,7 +42,7 @@ describe('Logic Controller Test', () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { branchID: '101' };
             (logicService.getBranchEmployees as jest.Mock).mockImplementation(() => { throw error; });
 
@@ -53,7 +54,7 @@ describe('Logic Controller Test', () => {
 
     describe('getDepartmentEmployees Test', () => {
         it('should return employees for a given department', async () => {
-            const mockEmployees = [
+            const mockEmployees: Employee[] = [
                 { id: '3', name: 'Alice Johnson', position: 'Analyst', department: 'Finance', email: 'alice.johnson@example.com', phone: '555-666-7777', branchID: '102' }
             ];
             mockReq.params = { department: 'Finance' };
@@ -71,7 +72,7 @@ describe('Logic Controller Test', () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { department: 'Finance' };
             (logicService.getDepartmentEmployees as jest.Mock).mockImplementation(() => { throw error; });
 

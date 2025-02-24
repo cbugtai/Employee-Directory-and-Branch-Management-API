@@ -13,9 +13,8 @@ describe("Logic Service Tests", () => {
 
         it("should return items matching the field value", async () => {
             //Arrange
-            const mockDate = new Date();
-            const mockFieldName = "branchID";
-            const mockFieldValue = "branch1";
+            const mockFieldName: string = "branchID";
+            const mockFieldValue: string = "branch1";
             const mockDocs: QueryDocumentSnapshot[] = [
                 {
                     id: "emp1",
@@ -80,10 +79,10 @@ describe("Logic Service Tests", () => {
         });
 
         it("should handle empty results by passing through the repository error", async () => {
-            const mockFieldName = "branchID";
-            const mockFieldValue = "nonexistent";
+            const mockFieldName: string = "branchID";
+            const mockFieldValue: string = "nonexistent";
 
-            const mockError = new Error(
+            const mockError: Error = new Error(
                 `No documents found in collection items where ${mockFieldName} == ${mockFieldValue}`
             );
 
@@ -112,7 +111,7 @@ describe("Logic Service Tests", () => {
 
         it("should return employees matching the department", async () => {
             // Arrange
-            const mockDepartment = "Engineering";
+            const mockDepartment: string = "Engineering";
             const mockDocs: QueryDocumentSnapshot[] = [
                 {
                     id: "emp1",
@@ -176,8 +175,8 @@ describe("Logic Service Tests", () => {
         });
 
         it("should handle empty results by passing through the repository error", async () => {
-            const mockDepartment = "NonExistentDepartment";
-            const mockError = new Error(
+            const mockDepartment: string = "NonExistentDepartment";
+            const mockError: Error = new Error(
                 `No documents found in collection items where department == ${mockDepartment}`
             );
 

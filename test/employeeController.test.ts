@@ -47,7 +47,7 @@ describe("Employee Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             (employeeService.addEmployee as jest.Mock).mockRejectedValue(error);
 
             await employeeController.createEmployee(mockReq as Request, mockRes as Response, mockNext);
@@ -92,7 +92,7 @@ describe("Employee Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             (employeeService.getAllEmployees as jest.Mock).mockRejectedValue(error);
 
             await employeeController.getAllEmployees(mockReq as Request, mockRes as Response, mockNext);
@@ -127,7 +127,7 @@ describe("Employee Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { id: '1' };
             (employeeService.getEmployee as jest.Mock).mockRejectedValue(error);
 
@@ -164,7 +164,7 @@ describe("Employee Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { id: '1' };
             mockReq.body = {
                 name: 'John Doe Updated',
@@ -198,7 +198,7 @@ describe("Employee Controller Tests", () => {
         });
 
         it('should call next if an error occurs', async () => {
-            const error = new Error('Test Error');
+            const error: Error = new Error('Test Error');
             mockReq.params = { id: '1' };
             (employeeService.deleteEmployee as jest.Mock).mockRejectedValue(error);
 

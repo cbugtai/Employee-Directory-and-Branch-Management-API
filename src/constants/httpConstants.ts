@@ -1,4 +1,4 @@
-export const HTTP_STATUS: any = {
+export const HTTP_STATUS: Record<string, number> = {
     OK: 200,
     CREATED: 201,
     BAD_REQUEST: 400,

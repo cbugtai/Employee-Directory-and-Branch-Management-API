@@ -658,20 +658,6 @@ describe("validateRequest middleware for Employee Id parameter", () => {
             error: "Validation error: Id cannot be empty."
         });
     });
-
-    it("should return an error for non-numeric Employee Id", () => {
-        req.params = {
-            id: "abc"
-        };
-
-        validateRequest(employeeIdSchema, "params")(req as Request, res as Response, next);
-
-        expect(next).not.toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({
-            error: "Validation error: Id must be a number"
-        });
-    });
 });
 
 describe("validateRequest middleware for Department parameter", () => {

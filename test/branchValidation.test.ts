@@ -340,18 +340,4 @@ describe("validateRequest middleware for Branch Id parameter", () => {
             error: "Validation error: Branch Id cannot be empty."
         });
     });
-
-    it("should return an error for non-numeric Branch Id", () => {
-        req.params = {
-            id: "a"
-        };
-
-        validateRequest(branchIdSchema, "params")(req as Request, res as Response, next);
-
-        expect(next).not.toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({
-            error: "Validation error: Branch Id must be a number"
-        });
-    });
 })

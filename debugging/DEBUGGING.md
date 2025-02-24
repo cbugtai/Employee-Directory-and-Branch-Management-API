@@ -30,23 +30,44 @@
     being used, understanding it better helps me understand how 
     validation works for the whole project
 
-## Scenario 2: [Title of the Scenario]
+## Scenario 2: Firestore Operations
 
--   **Breakpoint Location:** [File and line number]
--   **Objective:** [What you are investigating or trying to understand]
+-   **Breakpoint Location:** employeeController.ts Line 50
+-   **Objective:** investigating how my services interacts with the Firestore database
+                    specifically for getEmployee
 
 ### Debugger Observations
 
--   **Variable States:** [List key variables and their values]
--   **Call Stack:** [Summarize the function sequence leading to the breakpoint]
--   **Behavior:** [Describe what happens at this point in the program]
+-   **Variable States:** req.params = { id: "8huwzwR8bScljUuBSj4e" }
+                         successResponse Return Value = 
+                         {
+                            "status": "success",
+                            "data": {
+                                "id": "8huwzwR8bScljUuBSj4e",
+                                "name": "Alice Johnson",
+                                "position": "Branch Manager",
+                                "department": "Management",
+                                "email": "alice.johnson@pixell-river.com",
+                                "phone": "604-555-0148",
+                                "branchID": "1"
+                            },
+                            "message": "Employee ID 8huwzwR8bScljUuBSj4e Retrieved"
+                        }
+-   **Call Stack:** The endpoint gets called and the request passed through validation.
+-   **Behavior:** The controller calls the employeeService.getEmployee method using the request parameter id,
+                then the firebase.getDocumentById function gets called with "employee" collection and the Id,
+                the getDocumentById function then queries the firestore database using the "employee" collection and id
+                and gets the snapshot for that document, its then returned to employeeService.getEmployee which parses that 
+                snapshot data into an Employee type and returns it to employeeController.getEmployee as result which is
+                then sent to successResponse with a message which then formats it for the response.
 
 ### Analysis
 
--   What did you learn from this scenario?
--   Did you observe any unexpected behavior? If so, what might be the cause?
--   Are there areas for improvement or refactoring in this part of the code?
--   How does this enhance your understanding of the overall project?
+-   I learned how my service works when called successfully including interaction with the firestore database
+-   No unexpected behavior observed
+-   No areas of improvemen found at this time
+-   Getting a step-by-step look at my getEmployee service function allows me to understand my overall code better 
+    especially the middleware for firestore and the responseModels
 
 ## Scenario 3: [Title of the Scenario]
 

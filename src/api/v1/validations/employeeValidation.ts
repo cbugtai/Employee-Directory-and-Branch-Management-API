@@ -41,11 +41,10 @@ export const employeeSchema: ObjectSchema = Joi.object({
 })
 
 export const employeeIdSchema: ObjectSchema = Joi.object({
-    id: Joi.string().pattern(/^\d+$/).required()
+    id: Joi.string().required()
         .messages({
             "any.required": "Id is required",
             "string.empty": "Id cannot be empty.",
-            "string.pattern.base": "Id must be a number" 
         })
 });
 

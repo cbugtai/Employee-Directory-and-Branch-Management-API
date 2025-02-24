@@ -266,16 +266,6 @@ describe("Validate schema for EmployeeID", () => {
             "Validation error: Id cannot be empty."
         );
     });
-
-    it("should throw an error for non-numerical Employee ID", () => {
-        const data: Partial<EmployeeId> = {
-            id: "a"
-        };
-
-        expect(() => validate(employeeIdSchema, data)).toThrow(
-            "Validation error: Id must be a number"
-        );
-    });
 });
 
 describe("Validate schema for Department", () => {

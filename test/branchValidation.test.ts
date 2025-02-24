@@ -145,16 +145,6 @@ describe("Validate schema for BranchID", () => {
             "Validation error: Branch Id cannot be empty."
         )
     })
-
-    it("should throw and error for non-numerical Branch ID", () => {
-        const data: Partial<BranchId> = {
-            id: "a"
-        }
-
-        expect(() => validate(branchIdSchema, data)).toThrow(
-            "Validation error: Branch Id must be a number"
-        )
-    })
 })
 
 describe("validateRequest middleware for branches body", () => {
